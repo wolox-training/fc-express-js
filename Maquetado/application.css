@@ -57,7 +57,7 @@ h2{
   font-size: 24px;
   position: relative;
   left: 130px;
-  bottom: -50px;
+  bottom: -50px;us
 
 }
 
@@ -107,4 +107,60 @@ margin: 5px;
   align-items: center;
   margin-left: 20px;
 
+}
+
+.footer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #00ADEE;
+  color: white;
+  height: 20vh;
+  justify-content: center;
+  font-size: 24px;
+  margin: 0;
+
+}
+
+.myButton {
+	background-color:transparent;
+	border-radius:8px;
+  border:1px solid #ffffff;
+	display:inline-block;
+	cursor:pointer;
+	color: white;
+	padding:15px 31px;
+	text-decoration:none;
+
+
+
+}
+.myButton:hover {
+	background-color:transparent;
+
+
+}
+.myButton:active {
+	position:relative;
+
+}
+
+.imput{
+  border:2px solid white;
+	border-radius:10px;
+	height: 28px;
+	width: 350px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+
+}
+
+.copyright{
+  display: flex;
+  font-size: 12px;
+  font-weight:bold;
+  background-color: #cccccc;
+  color: black;
+  margin: 0;
+  justify-content: flex-end;
 }
