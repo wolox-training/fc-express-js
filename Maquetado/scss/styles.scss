@@ -1,0 +1,162 @@
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+.main-title {
+  font-size: $main-title-size;
+  justify-content: flex-end;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.techno-title {
+  font-size: $subtitle-size;
+}
+
+.type-tool {
+  font-size: $main-title-size;
+  position: relative;
+  max-width: 275px;
+
+  &::before {
+    background-image: url('assets/triangle.svg');
+    background-repeat: no-repeat;
+    content: '';
+    height: 90px;
+    position: absolute;
+    width: 100px;
+    right: 80%;
+    top: -30px;
+    z-index: -1;
+  }
+}
+
+.tools-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding: 50px;
+}
+
+.container-techno {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-left: 150px;
+  margin-top: 50px;
+  max-width: 1200px;
+  padding: 50px;
+  width: 100%;
+}
+
+.techno {
+  align-items: center;
+  border: 1px solid $green;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 100px 20px 10px;
+  padding: 20px;
+  position: relative;
+  max-width: 200px;
+  width: 100%;
+
+  &::before {
+    background-color: $green;
+    border-radius: 5px;
+    content: '';
+    height: 100%;
+    left: 10px;
+    position: absolute;
+    top: 10px;
+    width: 200px;
+    z-index: -1;
+  }
+}
+
+.logo-techn {
+  height: 100px;
+  margin: 10px;
+  width: 100px;
+}
+
+.techno-description {
+  font-size: $description-size;
+  margin: 15px;
+  text-align: center;
+}
+
+.description {
+   display: flex;
+   font-size: $description-size;
+   font-weight:bold;
+   margin: 5px;
+}
+
+.nav-bar {
+  align-items: center;
+  box-shadow: 0px 11px 5px -5px $grey;
+  display: flex;
+  font-size: $main-title-size;
+  height: 90px;
+  justify-content: space-between;
+  margin-left: 20px;
+}
+
+.send-button {
+	border-radius: 8px;
+  border: 1px solid $white;
+	color: white;
+  cursor: pointer;
+	padding:15px 30px;
+	text-decoration:none;
+}
+
+.email-input {
+  border:2px solid white;
+  border-radius:10px;
+  height: 30px;
+  margin: 20px auto;
+  width: 350px;
+}
+
+.contact-title {
+  color: $white;
+  font-size: $main-title-size;
+}
+
+.copyright {
+  background-color: $grey;
+  color: black;
+  display: flex;
+  font-size: $description-size;
+  font-weight:bold;
+  justify-content: flex-end;
+  margin: 0;
+  width: 100%;
+}
+
+.contact-form {
+  align-items: center;
+  color: $white;
+  display: flex;
+  flex-direction: column;
+  font-size: $main-title-size;
+  height: 20vh;
+  justify-content: center;
+}
+
+.footer {
+  margin-top: 50px;
+  background-color: $blue;
+}
