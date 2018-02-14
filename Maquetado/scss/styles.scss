@@ -51,8 +51,6 @@ body {
   flex-direction: column;
   flex-wrap: wrap;
   margin: 50px, auto;
-  margin-top: 50px;
-  margin-left: 150px;
   max-width: 1200px;
   padding: 50px;
   width: 100%;
@@ -60,11 +58,10 @@ body {
 
 .techno {
   align-items: center;
-  border: 1px solid $color-green;
+  border: 1px solid $green;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  height: auto;
   justify-content: center;
   margin: 100px 20px 10px;
   padding: 20px;
@@ -73,7 +70,7 @@ body {
   width: 100%;
 
   &::before {
-    background-color: $color-green;
+    background-color: $green;
     border-radius: 5px;
     content: '';
     height: 100%;
@@ -106,7 +103,7 @@ body {
 
 .nav-bar {
   align-items: center;
-  box-shadow: 0px 11px 5px -5px $color-grey;
+  box-shadow: 0px 11px 5px -5px $grey;
   display: flex;
   font-size: $main-title-size;
   height: 90px;
@@ -116,7 +113,7 @@ body {
 
 .send-button {
 	border-radius: 8px;
-  border: 1px solid $color-white;
+  border: 1px solid $white;
 	color: white;
   cursor: pointer;
 	padding:15px 30px;
@@ -125,19 +122,19 @@ body {
 
 .email-input {
   border:2px solid white;
-	border-radius:10px;
-	height: 30px;
+  border-radius:10px;
+  height: 30px;
   margin: 20px auto;
   width: 350px;
 }
 
 .contact-title {
-  color: $color-white;
-  font-size: 24px;
+  color: $white;
+  font-size: $main-title-size;
 }
 
 .copyright {
-  background-color: $color-grey;
+  background-color: $grey;
   color: black;
   display: flex;
   font-size: $description-size;
@@ -149,7 +146,7 @@ body {
 
 .contact-form {
   align-items: center;
-  color: $color-white;
+  color: $white;
   display: flex;
   flex-direction: column;
   font-size: $main-title-size;
@@ -159,5 +156,5 @@ body {
 
 .footer {
   margin-top: 50px;
-  background-color: $color-blue;
+  background-color: $blue;
 }
