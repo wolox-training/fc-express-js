@@ -122,13 +122,15 @@ body {
 .tools-container {
   display: flex;
   justify-content: flex-start;
-  flex-wrap: wrap; }
+  flex-wrap: wrap;
+  padding: 50px; }
 
 .container-techno {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  margin: 50px, auto;
+  margin-left: 150px;
+  margin-top: 50px;
   max-width: 1200px;
   padding: 50px;
   width: 100%; }
