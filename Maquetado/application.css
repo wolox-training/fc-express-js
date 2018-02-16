@@ -215,9 +215,9 @@ body {
 .footer {
   background-color: #00ADEE; }
 
-@media (max-width: 1024px) {
+@media screen and (max-width: 1024px) {
   .tools-container {
-    display: inline;
+    grid-template-columns: max-content;
     margin-left: -100px; }
 
   .main-title {
@@ -225,8 +225,14 @@ body {
 
   .techno {
     border: none;
-    border-bottom: 2px solid #BED23C;
     box-sizing: content-box;
-    padding: 20px; } }
+    padding: 20px; }
+    .techno:not(:last-child) {
+      border-right: none;
+      border-bottom: 2px solid #BED23C; }
+
+  .main-tech {
+    grid-column: 1;
+    grid-row: 1 / 2; } }
 
 /*# sourceMappingURL=application.css.map */
