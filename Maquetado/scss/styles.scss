@@ -23,6 +23,7 @@ body {
 }
 
 .type-tool {
+  display: flex;
   font-size: $main-title-size;
   position: relative;
   max-width: 275px;
@@ -41,9 +42,9 @@ body {
 }
 
 .tools-container {
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  justify-content: center;
   padding: 50px;
 }
 
@@ -60,28 +61,18 @@ body {
 
 .techno {
   align-items: center;
-  border: 1px solid $green;
-  border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 100px 20px 10px;
   padding: 20px;
-  position: relative;
-  max-width: 200px;
+  max-width: 222px;
   width: 100%;
+}
 
-  &::before {
-    background-color: $green;
-    border-radius: 5px;
-    content: '';
-    height: 100%;
-    left: 10px;
-    position: absolute;
-    top: 10px;
-    width: 200px;
-    z-index: -1;
-  }
+.main-tech {
+  border-right: 2px solid $green ;
+  grid-column: 1;
+  grid-row: 1 / 3;
 }
 
 .logo-techn {
@@ -157,6 +148,5 @@ body {
 }
 
 .footer {
-  margin-top: 50px;
   background-color: $blue;
 }

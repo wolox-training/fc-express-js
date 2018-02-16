@@ -105,6 +105,7 @@ body {
   font-size: 16px; }
 
 .type-tool {
+  display: flex;
   font-size: 24px;
   position: relative;
   max-width: 275px; }
@@ -120,9 +121,9 @@ body {
     z-index: -1; }
 
 .tools-container {
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  justify-content: center;
   padding: 50px; }
 
 .container-techno {
@@ -137,26 +138,17 @@ body {
 
 .techno {
   align-items: center;
-  border: 1px solid #BED23C;
-  border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 100px 20px 10px;
   padding: 20px;
-  position: relative;
-  max-width: 200px;
+  max-width: 222px;
   width: 100%; }
-  .techno::before {
-    background-color: #BED23C;
-    border-radius: 5px;
-    content: '';
-    height: 100%;
-    left: 10px;
-    position: absolute;
-    top: 10px;
-    width: 200px;
-    z-index: -1; }
+
+.main-tech {
+  border-right: 2px solid #BED23C;
+  grid-column: 1;
+  grid-row: 1 / 3; }
 
 .logo-techn {
   height: 100px;
@@ -222,7 +214,6 @@ body {
   justify-content: center; }
 
 .footer {
-  margin-top: 50px;
   background-color: #00ADEE; }
 
 /*# sourceMappingURL=application.css.map */
