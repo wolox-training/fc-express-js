@@ -118,6 +118,8 @@ body {
 
 .tools-container {
   display: grid;
+  grid-template-columns: repeat(3, max-content);
+  justify-content: center;
   padding: 50px;
   width: auto; }
 
@@ -141,9 +143,10 @@ body {
   padding: 20px;
   width: 100%; }
 
-.main-techn {
+.main-tech {
+  border-right: 2px solid #BED23C;
   grid-column: 1;
-  grid-row: 1 / 2; }
+  grid-row: 1 / 3; }
 
 .logo-techn {
   height: 100px;
@@ -209,7 +212,6 @@ body {
   justify-content: center; }
 
 .footer {
-  margin-top: 50px;
   background-color: #00ADEE; }
 
 /*# sourceMappingURL=application.css.map */
