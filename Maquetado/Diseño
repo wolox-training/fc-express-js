@@ -1,0 +1,33 @@
+
+Vamos a crear una landing page para mostrar las tecnologías que utilizamos dentro del desarrollo web en Wolox.
+
+Para esto vamos a utilizar las siguientes herramientas:
+
+- [**HTML5**](https://developer.mozilla.org/en-US/docs/Learn/HTML)
+- [**SASS - SCSS**](http://sass-lang.com/)
+- [**Flexbox**](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+
+## Colores de la página:
+
+blue: #00ADEE
+green: #BED23C
+grey: #C4C4C4
+
+## Font
+
+[Roboto](https://fonts.google.com/specimen/Roboto)
+
+## Tamaños:
+
+nav-height: 90px;
+footer-height: 30vh;
+
+triangle-heigth: 90px;
+triangle-width: 100px;
+
+tech-logo-size: 100px;
+
+font-big: 24px;
+font-medium: 16px;
+font-small: 12px;
+
