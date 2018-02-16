@@ -122,8 +122,8 @@ body {
 
 .tools-container {
   display: grid;
-  grid-template-columns: 250px 213px 200px;
-  margin-left: 100px;
+  grid-template-columns: repeat(3, max-content);
+  justify-content: center;
   padding: 50px; }
 
 .container-techno {
@@ -145,27 +145,10 @@ body {
   max-width: 222px;
   width: 100%; }
 
-.react-ruby {
-  border-radius: 5px;
+.main-tech {
   border-right: 2px solid #BED23C;
   grid-column: 1;
   grid-row: 1 / 3; }
-
-.angular-node {
-  grid-column: 2;
-  grid-row: 1 / 2; }
-
-.vue-asp {
-  grid-column: 3;
-  grid-row: 1 / 2; }
-
-.elm-django {
-  grid-column: 2;
-  grid-row: 2 / 3; }
-
-.polymer {
-  grid-column: 3;
-  grid-row: 2 / 3; }
 
 .logo-techn {
   height: 100px;
@@ -231,7 +214,6 @@ body {
   justify-content: center; }
 
 .footer {
-  margin-top: 50px;
   background-color: #00ADEE; }
 
 /*# sourceMappingURL=application.css.map */
