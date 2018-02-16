@@ -100,6 +100,10 @@ body {
 .techno-title {
   font-size: 16px; }
 
+.main-title {
+  font-size: 24px;
+  justify-content: flex-end; }
+
 .type-tool {
   display: flex;
   font-size: 24px;
@@ -119,8 +123,8 @@ body {
 .tools-container {
   display: grid;
   grid-template-columns: repeat(3, max-content);
-  justify-content: center;
   padding: 50px;
+  margin-left: 100px;
   width: auto; }
 
 .container-techno {
@@ -134,11 +138,9 @@ body {
 
 .techno {
   align-items: center;
-  border-bottom: 2px solid #BED23C;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: -80px;
   max-width: 222px;
   padding: 20px;
   width: 100%; }
@@ -168,9 +170,8 @@ body {
   align-items: center;
   box-shadow: 0px 11px 5px -5px #C4C4C4;
   display: flex;
-  font-size: 24px;
   height: 90px;
-  justify-content: flex-start;
+  justify-content: space-between;
   margin-left: 20px; }
 
 .send-button {
@@ -213,5 +214,19 @@ body {
 
 .footer {
   background-color: #00ADEE; }
+
+@media (max-width: 1024px) {
+  .tools-container {
+    display: inline;
+    margin-left: -100px; }
+
+  .main-title {
+    display: none; }
+
+  .techno {
+    border: none;
+    border-bottom: 2px solid #BED23C;
+    box-sizing: content-box;
+    padding: 20px; } }
 
 /*# sourceMappingURL=application.css.map */
