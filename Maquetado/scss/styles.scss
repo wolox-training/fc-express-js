@@ -54,7 +54,6 @@ body {
 
 .techno {
   align-items: center;
-  border-radius: 5px;
   border-bottom: 2px solid $green ;
   display: flex;
   flex-direction: column;
@@ -65,29 +64,9 @@ body {
   width: 100%;
 }
 
-.react-ruby {
+.main-techn {
   grid-column: 1;
   grid-row: 1 / 2;
-}
-
-.angular-node {
-  grid-column: 1;
-  grid-row: 2 / 3;
-}
-
-.vue-asp {
-  grid-column: 1;
-  grid-row: 3 / 4;
-}
-
-.elm-django {
-  grid-column: 1;
-  grid-row: 4 / 5;
-}
-
-.polymer {
-  grid-column: 1;
-  grid-row: 5 / 6;
 }
 
 .logo-techn {
