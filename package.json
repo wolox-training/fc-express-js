@@ -33,10 +33,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://git.almundo.com/smartcom/api-campaigns.git"
+    "url": "https://github.com/wolox-training/fc-express-js.git"
   },
   "bugs": {
-    "url": "https://git.almundo.com/smartcom/api-campaigns/issues"
+    "url": "https://github.com/wolox-training/fc-express-js/issues"
   },
   "dependencies": {
     "bcrypt": "^1.0.1",
