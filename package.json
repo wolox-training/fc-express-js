@@ -29,7 +29,7 @@
   ],
   "main": "app.js",
   "author": "Wolox",
-  "homepage": "https://git.almundo.com/smartcom/api-campaigns",
+  "homepage": "https://github.com/wolox-training/fc-express-js",
   "license": "MIT",
   "repository": {
     "type": "git",
