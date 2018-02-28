@@ -47,3 +47,6 @@ node_modules
 
 .sass-cache
 Maquetado/.sass-cache%
+
+# visual Studio Code
+.vscode
