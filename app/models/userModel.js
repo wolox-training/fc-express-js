@@ -37,7 +37,7 @@ module.exports = function(sequelize, DataTypes) {
         validate: {
           len: {
             args: [8, 255], // only allow values with length between 8 and 20
-            msg: 'Password values with length between 8 and 20'
+            msg: 'Password values with length between 8 and 255'
           }
         }
       }

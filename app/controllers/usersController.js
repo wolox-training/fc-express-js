@@ -5,8 +5,6 @@ const errors = require('../errors'),
   User = require('../models').User;
 
 exports.create = (req, res, next) => {
-  const saltRounds = 10;
-
   const userParams = req.body
     ? {
         name: req.body.name,
@@ -32,6 +30,7 @@ exports.create = (req, res, next) => {
         res.status(422).send(err.message);
       } else {
         logger.error(errors.databaseError(err));
+        res.status(400).send(errors.databaseError(err));
       }
     });
 };
