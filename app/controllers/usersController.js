@@ -22,7 +22,6 @@ exports.create = (req, res, next) => {
         surname: user.surname,
         email: user.email
       });
-      res.end();
     })
     .catch(err => {
       if (err.errors) {
