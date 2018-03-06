@@ -8,11 +8,9 @@ exports.invalidEmail = {
   message: 'Invalid email, it must be a wolox domain.'
 };
 
-exports.databaseError = error => {
-  return {
-    statusCode: 400,
-    message: error.message
-  };
+exports.databaseError = {
+  statusCode: 400,
+  message: 'Error en la BD'
 };
 
 exports.defaultError = message => {
@@ -20,4 +18,9 @@ exports.defaultError = message => {
     statusCode: 500,
     message
   };
+};
+
+exports.invalidUser = {
+  statusCode: 422,
+  message: 'Invalid email or password, check if you wrote it correctly.'
 };

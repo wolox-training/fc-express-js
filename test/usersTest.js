@@ -4,9 +4,75 @@ const chai = require('chai'),
   server = require('./../app'),
   expect = chai.expect,
   should = chai.should(),
+  sessionManager = require('./../app/services/sessionManager'),
   User = require('./../app/models').User;
 
 chai.use(chaiHttp);
+
+describe('/users/session POST', () => {
+  let request;
+  let userCreation;
+  beforeEach(done => {
+    request = chai.request(server).post('/users/session');
+    userCreation = User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: '123456789'
+    });
+    done();
+  });
+
+  it('should fail login because of invalid email', done => {
+    userCreation.then(afterCreation => {
+      request.send({ email: 'invalid', password: '123456789' }).catch(err => {
+        err.should.have.status(422);
+        err.response.should.be.json;
+        err.response.body.should.have.property('error');
+        done();
+      });
+    });
+  });
+
+  it('should fail login because of invalid password', done => {
+    userCreation.then(afterCreation => {
+      request
+        .send({
+          email: 'franco.coronel@wolox.com.ar',
+          password: 'invalid'
+        })
+        .catch(err => {
+          err.should.have.status(400);
+          err.response.should.be.json;
+          err.response.body.should.have.property('error');
+          done();
+        });
+    });
+  });
+
+  it('Log in Should be successful', done => {
+    userCreation.then(afterCreation => {
+      request
+        .send({
+          email: 'franco.coronel@wolox.com.ar',
+          password: '123456789'
+        })
+        .then(res => {
+          res.should.have.status(201);
+          res.should.be.json;
+          res.body.should.have.property('name');
+          res.body.should.have.property('surname');
+          res.body.should.have.property('email');
+          res.body.should.have.property('password');
+          res.body.should.have.property('createdAt');
+          res.body.should.have.property('updatedAt');
+          res.headers.should.have.property(sessionManager.HEADER_NAME);
+          dictum.chai(res);
+          done();
+        });
+    });
+  });
+});
 
 describe('/users POST', () => {
   let request;
@@ -38,7 +104,7 @@ describe('/users POST', () => {
     User.count().then(oldCount => {
       request
         .send({
-          name: 'Coronel',
+          name: 'Franco',
           email: 'franco.coronel@wolox.com.ar',
           password: '123456789'
         })
