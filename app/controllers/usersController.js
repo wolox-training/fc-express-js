@@ -15,21 +15,21 @@ exports.login = (req, res, next) => {
       }
     : {};
 
-  userService.getByEmail(userLogin.email).then(u => {
-    if (u) {
-      bcrypt.compare(userLogin.password, u.password).then(isValid => {
+  userService.getByEmail(userLogin.email).then(userInBD => {
+    if (userInBD) {
+      bcrypt.compare(userLogin.password, userInBD.password).then(isValid => {
         if (isValid) {
-          const auth = sessionManager.encode({ email: u.email });
+          const auth = sessionManager.encode({ email: userInBD.email });
           res.status(201);
           res.set(sessionManager.HEADER_NAME, auth);
-          logger.info(`The user ${u.email} was logged in succesfull`);
-          res.send(u);
+          logger.info(`The user ${userInBD.email} was logged in succesfull`);
+          res.send(userInBD);
         } else {
-          next(errors.databaseError);
+          next(errors.invalidPassword);
         }
       });
     } else {
-      next(errors.invalidUser);
+      next(errors.invalidCredentials);
     }
   });
 };
@@ -63,22 +63,3 @@ exports.create = (req, res, next) => {
       }
     });
 };
-
-// exports.listUsers = (req,res,next) => {
-//     let limit = 50;   // number of records per page
-//     let offset = 0;
-//     User.findAndCountAll()
-//     .then((data) => {
-//       User.findAll({
-//         attributes: ['name', 'surname', 'email'],
-//         limit: limit,
-//         offset: offset
-//       })
-//       .then((users) => {
-//         res.status(200).json({'result': users, 'count': data.count});
-//       });
-//     })
-//     .catch(function (error) {
-//       res.status(500).send('Internal Server Error');
-//     });
-//   };

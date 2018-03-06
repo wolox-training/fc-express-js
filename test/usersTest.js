@@ -9,6 +9,13 @@ const chai = require('chai'),
 
 chai.use(chaiHttp);
 
+const successfulLogin = cb => {
+  return chai
+    .request(server)
+    .post('/users/session')
+    .send({ email: 'franco.coronel@wolox.com.ar', password: '123456789' });
+};
+
 describe('/users/session POST', () => {
   let request;
   let userCreation;
@@ -26,7 +33,7 @@ describe('/users/session POST', () => {
   it('should fail login because of invalid email', done => {
     userCreation.then(afterCreation => {
       request.send({ email: 'invalid', password: '123456789' }).catch(err => {
-        err.should.have.status(422);
+        err.should.have.status(401);
         err.response.should.be.json;
         err.response.body.should.have.property('error');
         done();
@@ -42,7 +49,7 @@ describe('/users/session POST', () => {
           password: 'invalid'
         })
         .catch(err => {
-          err.should.have.status(400);
+          err.should.have.status(401);
           err.response.should.be.json;
           err.response.body.should.have.property('error');
           done();
@@ -219,5 +226,44 @@ describe('/users POST', () => {
           });
         });
     });
+  });
+});
+
+describe('/users GET', () => {
+  let request;
+  let userCreation;
+  beforeEach(done => {
+    request = chai.request(server).get('/users');
+    done();
+  });
+
+  it(`should fail because ${sessionManager.HEADER_NAME} header is not being sent`, done => {
+    request.catch(err => err.should.have.status(401));
+    done();
+  });
+
+  it('should return all users', done => {
+    User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: '123456789'
+    }).then(
+      successfulLogin().then(loginRes => {
+        chai
+          .request(server)
+          .get('/users')
+          .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
+          .then(res => {
+            res.should.have.status(201);
+            res.should.be.json;
+            res.body.should.have.property('name');
+            res.body.should.have.property('surname');
+            res.body.should.have.property('email');
+            dictum.chai(res);
+          });
+        done();
+      })
+    );
   });
 });

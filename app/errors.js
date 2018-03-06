@@ -10,7 +10,7 @@ exports.invalidEmail = {
 
 exports.databaseError = {
   statusCode: 400,
-  message: 'Error en la BD'
+  message: 'Error in the Database'
 };
 
 exports.defaultError = message => {
@@ -20,7 +20,12 @@ exports.defaultError = message => {
   };
 };
 
-exports.invalidUser = {
-  statusCode: 422,
+exports.invalidCredentials = {
+  statusCode: 401,
   message: 'Invalid email or password, check if you wrote it correctly.'
+};
+
+exports.invalidPassword = {
+  statusCode: 401,
+  message: 'Invalid password, check if you wrote it correctly.'
 };

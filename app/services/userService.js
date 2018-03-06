@@ -2,7 +2,7 @@ const User = require('../models').User,
   logger = require('../logger'),
   errors = require('../errors');
 
-exports.getOne = email => {
+const getOne = email => {
   return User.findOne({ where: email }).catch(err => {
     logger.error(err.message);
     throw errors.databaseError(err.detail);
@@ -10,5 +10,5 @@ exports.getOne = email => {
 };
 
 exports.getByEmail = email => {
-  return exports.getOne({ email });
+  return getOne({ email });
 };
