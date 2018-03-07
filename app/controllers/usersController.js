@@ -4,7 +4,6 @@ const errors = require('../errors'),
   logger = require('../logger'),
   User = require('../models').User,
   bcrypt = require('bcrypt'),
-  moment = require('moment'),
   userService = require('../services/userService'),
   sessionManager = require('../services/sessionManager');
 
@@ -21,7 +20,7 @@ exports.login = (req, res, next) => {
       bcrypt.compare(userLogin.password, userInBD.password).then(isValid => {
         if (isValid) {
           const auth = sessionManager.encode({ email: userInBD.email });
-          res.status(201);
+          res.status(200);
           res.set(sessionManager.HEADER_NAME, auth);
           logger.info(`The user ${userInBD.email} was logged in succesfull`);
           res.send(userInBD);
@@ -66,12 +65,8 @@ exports.create = (req, res, next) => {
 };
 
 exports.getAllUsers = (req, res, next) => {
-  const limit = 10;
-  const offset = 0;
   User.findAll({
-    attributes: ['name', 'surname', 'email'],
-    offset,
-    limit
+    attributes: ['name', 'surname', 'email']
   })
     .then(users => {
       res.status(201);
@@ -79,8 +74,7 @@ exports.getAllUsers = (req, res, next) => {
     })
     .catch(err => {
       if (err.errors) {
-        logger.error(err.message);
-        res.status(422).send(err.message);
+        next(err);
       } else {
         logger.error(errors.databaseError(err.detail));
         res.status(400).send(errors.databaseError(err));
