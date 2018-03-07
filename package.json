@@ -21,7 +21,7 @@
     "prestart": "npm run lint",
     "migrations": "./node_modules/.bin/sequelize db:migrate",
     "start": "./node_modules/.bin/nodemon --inspect app.js",
-    "test": "NODE_ENV=testing ./node_modules/mocha/bin/mocha --compilers js:babel-core/register test/app.js && npm run nsp",
+    "test": "NODE_ENV=testing ./node_modules/mocha/bin/mocha --compilers js:babel-core/register test/app.js && npm run nsp" ,
     "test-inspect": "NODE_ENV=testing node --inspect --debug-brk ./node_modules/mocha/bin/_mocha --compilers js:babel-core/register test/app.js"
   },
   "cacheDirectories": [
@@ -61,7 +61,7 @@
     "chai": "^3.5.0",
     "chai-http": "^2.0.1",
     "coveralls": "^2.11.9",
-    "dictum.js": "^1.0.0",
+    "dictum.js": "^1.0.4",
     "eslint": "^4.8.0",
     "eslint-config-airbnb-base": "^12.0.2",
     "eslint-config-prettier": "^2.3.1",
