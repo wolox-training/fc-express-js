@@ -69,7 +69,7 @@ exports.getAllUsers = (req, res, next) => {
     attributes: ['name', 'surname', 'email']
   })
     .then(users => {
-      res.status(201);
+      res.status(200);
       res.send({ users });
     })
     .catch(err => {
