@@ -25,17 +25,11 @@ describe('/albums GET', () => {
   });
 
   it(`should fail because ${sessionManager.HEADER_NAME} header is not being sent`, done => {
-    User.create({
-      name: 'Franco',
-      surname: 'Coronel',
-      email: 'franco.coronel@wolox.com.ar',
-      password: 'passwordFC'
-    });
     request.catch(err => err.should.have.status(401));
     done();
   });
 
-  it.only('should return all albums', done => {
+  it('should return all albums', done => {
     const albumsNock = nock('https://jsonplaceholder.typicode.com')
       .get('/albums')
       .reply(200, [

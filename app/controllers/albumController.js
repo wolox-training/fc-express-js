@@ -1,12 +1,12 @@
 const axios = require('axios'),
-  errors = require('../errors');
+  albumService = require('../services/albumService');
 
 exports.getAllAlbums = (req, res) => {
-  axios
-    .get('https://jsonplaceholder.typicode.com/albums')
-    .then(response => {
+  albumService
+    .getAllOfAlbumsProvider()
+    .then(albums => {
       res.status(200);
-      res.send(response.data);
+      res.send(albums.data);
     })
     .catch(error => {
       throw error;

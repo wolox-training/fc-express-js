@@ -25,14 +25,14 @@ describe('/users/session POST', () => {
       name: 'Franco',
       surname: 'Coronel',
       email: 'franco.coronel@wolox.com.ar',
-      password: '123456789'
+      password: 'passwordFC'
     });
     done();
   });
 
   it('should fail login because of invalid email', done => {
     userCreation.then(afterCreation => {
-      request.send({ email: 'invalid', password: '123456789' }).catch(err => {
+      request.send({ email: 'invalid', password: 'passwordFC' }).catch(err => {
         err.should.have.status(401);
         err.response.should.be.json;
         err.response.body.should.have.property('error');
@@ -62,7 +62,7 @@ describe('/users/session POST', () => {
       request
         .send({
           email: 'franco.coronel@wolox.com.ar',
-          password: '123456789'
+          password: 'passwordFC'
         })
         .then(res => {
           res.should.have.status(200);
@@ -94,7 +94,7 @@ describe('/users POST', () => {
         .send({
           surname: 'Coronel',
           email: 'franco.coronel@wolox.com.ar',
-          password: '123456789'
+          password: 'passwordFC'
         })
         .catch(err => {
           err.should.have.status(422);
@@ -113,7 +113,7 @@ describe('/users POST', () => {
         .send({
           name: 'Franco',
           email: 'franco.coronel@wolox.com.ar',
-          password: '123456789'
+          password: 'passwordFC'
         })
         .catch(err => {
           err.should.have.status(422);
@@ -151,7 +151,7 @@ describe('/users POST', () => {
         .send({
           name: 'Franco',
           surname: 'Coronel',
-          password: '123456789'
+          password: 'passwordFC'
         })
         .catch(err => {
           err.should.have.status(422);
@@ -171,7 +171,7 @@ describe('/users POST', () => {
           name: 'Franco',
           surname: 'Coronel',
           email: 'franco.coronel@wolox.com',
-          password: '123456789'
+          password: 'passwordFC'
         })
         .catch(err => {
           err.should.have.status(422);
@@ -210,7 +210,7 @@ describe('/users POST', () => {
           name: 'Franco',
           surname: 'Coronel',
           email: 'franco.coronel@wolox.com.ar',
-          password: '123456789'
+          password: 'passwordFC'
         })
         .then(res => {
           res.should.have.status(201);
@@ -219,7 +219,7 @@ describe('/users POST', () => {
             User.findOne({ where: { email: 'franco.coronel@wolox.com.ar' } }).then(user => {
               user.should.be.present;
               user.name.should.be.equal('Franco');
-              user.password.should.not.be.equal('123456789');
+              user.password.should.not.be.equal('passwordFC');
             });
             dictum.chai(res);
             done();
@@ -237,14 +237,10 @@ describe('/users GET', () => {
   });
 
   it(`should fail because ${sessionManager.HEADER_NAME} header is not being sent`, done => {
-    User.create({
-      name: 'Franco',
-      surname: 'Coronel',
-      email: 'franco.coronel@wolox.com.ar',
-      password: 'passwordFC'
+    request.catch(err => {
+      err.should.have.status(401);
+      done();
     });
-    request.catch(err => err.should.have.status(401));
-    done();
   });
 
   it('should return all users', done => {
@@ -258,13 +254,16 @@ describe('/users GET', () => {
         request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).then(res => {
           res.should.have.status(201);
           res.should.be.json;
-          res.body.should.have.property('name');
-          res.body.should.have.property('surname');
-          res.body.should.have.property('email');
+          res.body.should.have.property('users');
+          res.body.users.should.be.array;
+          res.body.users.should.have.lengthOf(1);
+          res.body.users[0].should.have.property('name');
+          res.body.users[0].should.have.property('surname');
+          res.body.users[0].should.have.property('email');
           dictum.chai(res);
+          done();
         });
-      }),
-      done()
+      })
     );
   });
 });
