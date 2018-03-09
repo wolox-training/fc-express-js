@@ -8,7 +8,7 @@ exports.secure = (req, res, next) => {
     const email = sessionManager.decode(auth);
     User.findOne({ where: email }).then(userAuthenticated => {
       if (!userAuthenticated) {
-        res.status(400).send({ message: 'User is not authenticated' });
+        res.status(401).send({ message: 'User is not authenticated' });
       } else {
         next();
       }
