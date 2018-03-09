@@ -220,9 +220,9 @@ describe('/users POST', () => {
               user.should.be.present;
               user.name.should.be.equal('Franco');
               user.password.should.not.be.equal('passwordFC');
-              dictum.chai(res);
-              done();
             });
+            dictum.chai(res);
+            done();
           });
         });
     });
@@ -237,11 +237,13 @@ describe('/users GET', () => {
   });
 
   it(`should fail because ${sessionManager.HEADER_NAME} header is not being sent`, done => {
-    request.catch(err => err.should.have.status(401));
-    done();
+    request.catch(err => {
+      err.should.have.status(401);
+      done();
+    });
   });
 
-  it('should return all users', done => {
+  it.only('should return all users', done => {
     User.create({
       name: 'Franco',
       surname: 'Coronel',
@@ -250,11 +252,14 @@ describe('/users GET', () => {
     }).then(
       successfullLogin().then(loginRes => {
         request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).then(res => {
-          res.should.have.status(200);
+          res.should.have.status(201);
           res.should.be.json;
-          res.body[0].should.have.property('name');
-          res.body[0].should.have.property('surname');
-          res.body[0].should.have.property('email');
+          res.body.should.have.property('users');
+          res.body.users.should.be.array;
+          res.body.users.should.have.lengthOf(1);
+          res.body.users[0].should.have.property('name');
+          res.body.users[0].should.have.property('surname');
+          res.body.users[0].should.have.property('email');
           dictum.chai(res);
           done();
         });
