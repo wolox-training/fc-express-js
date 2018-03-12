@@ -1,6 +1,6 @@
 const errors = require('../errors'),
-  Album = require('../models').Album,
   logger = require('../logger'),
+  Album = require('../models').Album,
   axios = require('axios');
 
 exports.getAllOfAlbumsProvider = () => {
