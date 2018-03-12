@@ -65,7 +65,7 @@ describe('/users/session POST', () => {
           password: 'passwordFC'
         })
         .then(res => {
-          res.should.have.status(201);
+          res.should.have.status(200);
           res.should.be.json;
           res.body.should.have.property('name');
           res.body.should.have.property('surname');
@@ -243,7 +243,7 @@ describe('/users GET', () => {
     });
   });
 
-  it.only('should return all users', done => {
+  it('should return all users', done => {
     User.create({
       name: 'Franco',
       surname: 'Coronel',

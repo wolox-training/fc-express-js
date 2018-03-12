@@ -20,7 +20,7 @@ exports.login = (req, res, next) => {
       bcrypt.compare(userLogin.password, userInBD.password).then(isValid => {
         if (isValid) {
           const auth = sessionManager.encode({ email: userInBD.email });
-          res.status(201);
+          res.status(200);
           res.set(sessionManager.HEADER_NAME, auth);
           logger.info(`The user ${userInBD.email} was logged in succesfull`);
           res.send(userInBD);
