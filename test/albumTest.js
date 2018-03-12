@@ -98,7 +98,7 @@ describe('/albums/:id POST', () => {
     );
   });
 
-  it.only('should return error for album with id 105', done => {
+  it('should return error for album with id 105', done => {
     User.create({
       name: 'Franco',
       surname: 'Coronel',
