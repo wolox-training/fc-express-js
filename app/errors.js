@@ -29,3 +29,8 @@ exports.invalidPassword = {
   statusCode: 401,
   message: 'Invalid password, check if you wrote it correctly.'
 };
+
+exports.albumsProviderFail = {
+  statusCode: 500,
+  message: 'The request to the albums provider failed.'
+};
