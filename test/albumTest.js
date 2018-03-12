@@ -61,3 +61,61 @@ describe('/albums GET', () => {
     );
   });
 });
+
+describe('/albums/:id POST', () => {
+  let request;
+  beforeEach(done => {
+    request = chai.request(server).post('/albums/1');
+    done();
+  });
+  it('should buy an album with id 1', done => {
+    const albumsNock = nock('https://jsonplaceholder.typicode.com')
+      .get('/albums?id=1')
+      .reply(200, [
+        {
+          userId: '1',
+          albumId: '1',
+          title: 'quidem molestiae enim'
+        }
+      ]);
+    User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC'
+    }).then(
+      successfullLogin().then(loginRes => {
+        request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).then(res => {
+          res.should.have.status(200);
+          res.should.be.json;
+          res.body.should.have.property('userId');
+          res.body.should.have.property('title');
+          res.body.should.have.property('albumId');
+          dictum.chai(res);
+          done();
+        });
+      })
+    );
+  });
+
+  it.only('should return error for album with id 105', done => {
+    User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC'
+    }).then(
+      successfullLogin().then(loginRes => {
+        chai
+          .request(server)
+          .post('/albums/105')
+          .catch(err => {
+            err.should.have.status(401);
+            err.response.should.be.json;
+            err.response.body.should.have.property('message');
+            done();
+          });
+      })
+    );
+  });
+});

@@ -29,3 +29,13 @@ exports.invalidPassword = {
   statusCode: 401,
   message: 'Invalid password, check if you wrote it correctly.'
 };
+
+exports.noAlbum = {
+  statusCode: 404,
+  message: 'Invalid Album, the album id does not exist.'
+};
+
+exports.alreadyBought = {
+  statusCode: 401,
+  message: 'The user has already bought the book before.'
+};

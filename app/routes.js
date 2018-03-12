@@ -7,4 +7,5 @@ exports.init = app => {
   app.post('/users/session', [], users.login);
   app.get('/users', [auth.secure], users.getAllUsers);
   app.get('/albums', [auth.secure], albums.getAllAlbums);
+  app.post('/albums/:id', [auth.secure], albums.buyAlbum);
 };
