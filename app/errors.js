@@ -39,3 +39,8 @@ exports.alreadyBought = {
   statusCode: 401,
   message: 'The user has already bought the book before.'
 };
+
+exports.albumsProviderFail = {
+  statusCode: 500,
+  message: 'The request to the albums provider failed.'
+};
