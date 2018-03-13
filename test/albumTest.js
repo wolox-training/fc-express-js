@@ -10,7 +10,7 @@ const chai = require('chai'),
 
 chai.use(chaiHttp);
 
-const successfullLogin = cb => {
+const successfullLogin = () => {
   return chai
     .request(server)
     .post('/users/session')
@@ -68,6 +68,12 @@ describe('/albums/:id POST', () => {
     request = chai.request(server).post('/albums/1');
     done();
   });
+
+  it(`should fail because ${sessionManager.HEADER_NAME} header is not being sent`, done => {
+    request.catch(err => err.should.have.status(401));
+    done();
+  });
+
   it('should buy an album with id 1', done => {
     const albumsNock = nock('https://jsonplaceholder.typicode.com')
       .get('/albums?id=1')
@@ -98,7 +104,7 @@ describe('/albums/:id POST', () => {
     );
   });
 
-  it('should return error for album with id 105', done => {
+  it('should return error for album with id 105 because the album does not exist', done => {
     User.create({
       name: 'Franco',
       surname: 'Coronel',
@@ -114,6 +120,31 @@ describe('/albums/:id POST', () => {
             err.response.should.be.json;
             err.response.body.should.have.property('message');
             done();
+          });
+      })
+    );
+  });
+
+  it.only('should return error for album with id 1 because the album has been already bought', done => {
+    User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC'
+    }).then(
+      successfullLogin().then(loginRes => {
+        request
+          .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
+          .then(albumBought => {
+            chai
+              .request(server)
+              .post('/albums?id=1')
+              .catch(err => {
+                err.should.have.status(404);
+                err.response.should.be.json;
+                err.response.body.should.have.property('message');
+                done();
+              });
           });
       })
     );

@@ -267,3 +267,41 @@ describe('/users GET', () => {
     );
   });
 });
+
+describe('/users/:user_id/albums GET', () => {
+  let request;
+  beforeEach(done => {
+    request = chai.request(server).get('/users?user_id=43/albums');
+    done();
+  });
+
+  it(`should fail because ${sessionManager.HEADER_NAME} header is not being sent`, done => {
+    request.catch(err => {
+      err.should.have.status(401);
+      done();
+    });
+  });
+
+  it('should return all albums bought', done => {
+    User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC'
+    }).then(
+      successfullLogin().then(loginRes => {
+        request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).then(res => {
+          res.should.have.status(201);
+          res.should.be.json;
+          res.body.should.have.property('albums');
+          res.body.albums.should.be.array;
+          res.body.albums[0].should.have.property('albumId');
+          res.body.albums[0].should.have.property('title');
+          res.body.albums[0].should.have.property('userId');
+          dictum.chai(res);
+          done();
+        });
+      })
+    );
+  });
+});

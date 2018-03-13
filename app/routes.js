@@ -8,4 +8,5 @@ exports.init = app => {
   app.get('/users', [auth.secure], users.getAllUsers);
   app.get('/albums', [auth.secure], albums.getAllAlbums);
   app.post('/albums/:id', [auth.secure], albums.buyAlbum);
+  app.get('/users/:user_id/albums', [auth.secure], users.getBoughtAlbums);
 };

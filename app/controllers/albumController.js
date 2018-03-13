@@ -1,6 +1,5 @@
 const axios = require('axios'),
   Album = require('../models').Album,
-  User = require('../models').User,
   errors = require('../errors'),
   logger = require('../logger'),
   albumService = require('../services/albumService');
@@ -45,6 +44,7 @@ exports.buyAlbum = (req, res, next) => {
       });
     })
     .catch(error => {
+      console.log(error);
       return next(error);
     });
 };

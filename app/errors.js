@@ -36,11 +36,16 @@ exports.noAlbum = {
 };
 
 exports.alreadyBought = {
-  statusCode: 401,
+  statusCode: 422,
   message: 'The user has already bought the book before.'
 };
 
 exports.albumsProviderFail = {
   statusCode: 500,
   message: 'The request to the albums provider failed.'
+};
+
+exports.noUserEqual = {
+  statusCode: 500,
+  message: 'The Id of request is not equal to the user authenticated.'
 };
