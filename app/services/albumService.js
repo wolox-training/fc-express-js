@@ -46,3 +46,15 @@ exports.getAlbumsMe = userId => {
     throw errors.databaseError;
   });
 };
+
+exports.getPhotosOfAlbum = id => {
+  return axios
+    .get(`https://jsonplaceholder.typicode.com/photos?albumId=${id}`)
+    .then(photos => {
+      // The album provider always returns an array of albums, so I return the first
+      return photos.data;
+    })
+    .catch(err => {
+      throw errors.photosOfAlbumsProviderFail;
+    });
+};

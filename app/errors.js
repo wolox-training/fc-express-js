@@ -54,3 +54,15 @@ exports.isNotAdmin = {
   statusCode: 422,
   message: 'The user is not an user administrator.'
 };
+
+exports.photosOfAlbumsProviderFail = {
+  statusCode: 422,
+  message: 'The request to the photos of albums provider failed.'
+};
+
+exports.noAlbumBought = albumId => {
+  return {
+    statusCode: 404,
+    message: `The user has not bought the album ${albumId} yet.`
+  };
+};

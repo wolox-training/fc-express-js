@@ -44,7 +44,6 @@ exports.buyAlbum = (req, res, next) => {
       });
     })
     .catch(error => {
-      console.log(error);
       return next(error);
     });
 };
@@ -64,4 +63,28 @@ exports.getBoughtAlbums = (req, res, next) => {
         return next(err);
       });
   }
+};
+
+exports.seePhotos = (req, res, next) => {
+  const albumId = req.params.id;
+  const user = req.userAuthenticated.dataValues;
+  albumService
+    .getAlbum(user.id, albumId)
+    .then(existingPurchase => {
+      if (existingPurchase) {
+        albumService
+          .getPhotosOfAlbum(existingPurchase.albumId)
+          .then(photos => {
+            res.status(201).send({ photos });
+          })
+          .catch(err => {
+            return next(err);
+          });
+      } else {
+        return next(errors.noAlbumBought(albumId));
+      }
+    })
+    .catch(err => {
+      return next(err);
+    });
 };
