@@ -48,3 +48,20 @@ exports.buyAlbum = (req, res, next) => {
       return next(error);
     });
 };
+
+exports.getBoughtAlbums = (req, res, next) => {
+  const userIdRequest = parseInt(req.params.user_id, 10);
+  const userIdDataBase = req.userAuthenticated.dataValues.id;
+  if (userIdRequest !== userIdDataBase) {
+    return next(errors.noUserEqual);
+  } else {
+    albumService
+      .getAlbumsMe(userIdDataBase)
+      .then(albums => {
+        res.status(201).send({ albums });
+      })
+      .catch(err => {
+        return next(err);
+      });
+  }
+};

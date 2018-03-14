@@ -11,6 +11,7 @@ exports.secure = (req, res, next) => {
         res.status(401).send({ message: 'User is not authenticated' });
       } else {
         req.userAuthenticated = userAuthenticated;
+        req.isAdmin = true;
         next();
       }
     });

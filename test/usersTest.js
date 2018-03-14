@@ -9,7 +9,7 @@ const chai = require('chai'),
 
 chai.use(chaiHttp);
 
-const successfullLogin = cb => {
+const successfullLogin = () => {
   return chai
     .request(server)
     .post('/users/session')
@@ -183,6 +183,7 @@ describe('/users POST', () => {
         });
     });
   });
+
   it('Should fail because the password hasnt 8 characters or more ', done => {
     User.count().then(oldCount => {
       request
@@ -268,21 +269,30 @@ describe('/users GET', () => {
   });
 });
 
-describe('/users/:user_id/albums GET', () => {
-  let request;
+describe('/admin/users POST', () => {
+  let userAdminRequest;
   beforeEach(done => {
-    request = chai.request(server).get('/users?user_id=43/albums');
+    userAdminRequest = chai
+      .request(server)
+      .post('/admin/users')
+      .send({
+        name: 'Matias',
+        surname: 'Pizzagalli',
+        email: 'matias.pizzagalli@wolox.com.ar',
+        password: 'passwordMP'
+      });
+
     done();
   });
 
   it(`should fail because ${sessionManager.HEADER_NAME} header is not being sent`, done => {
-    request.catch(err => {
+    userAdminRequest.catch(err => {
       err.should.have.status(401);
       done();
     });
   });
 
-  it('should return all albums bought', done => {
+  it(`should fail because is not an admin user`, done => {
     User.create({
       name: 'Franco',
       surname: 'Coronel',
@@ -290,16 +300,54 @@ describe('/users/:user_id/albums GET', () => {
       password: 'passwordFC'
     }).then(
       successfullLogin().then(loginRes => {
-        request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).then(res => {
-          res.should.have.status(201);
-          res.should.be.json;
-          res.body.should.have.property('albums');
-          res.body.albums.should.be.array;
-          res.body.albums[0].should.have.property('albumId');
-          res.body.albums[0].should.have.property('title');
-          res.body.albums[0].should.have.property('userId');
-          dictum.chai(res);
-          done();
+        User.count().then(oldCount => {
+          userAdminRequest
+            .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
+            .catch(err => {
+              err.should.have.status(422);
+              err.response.should.be.json;
+              err.response.body.should.have.property('error');
+              User.count().then(newCount => {
+                newCount.should.be.equal(oldCount);
+                done();
+              });
+            });
+        });
+      })
+    );
+  });
+
+  it('should create an admin user', done => {
+    User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC',
+      isAdmin: true
+    }).then(
+      successfullLogin().then(loginRes => {
+        User.count().then(oldCount => {
+          userAdminRequest
+            .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
+            .then(res => {
+              res.should.have.status(201);
+              res.should.be.json;
+              res.body.should.have.property('name');
+              res.body.should.have.property('surname');
+              res.body.should.have.property('email');
+              res.body.should.have.property('isAdmin');
+              User.count().then(newCount => {
+                newCount.should.be.equal(oldCount + 1);
+                User.findOne({ where: { email: 'matias.pizzagalli@wolox.com.ar' } }).then(user => {
+                  user.should.be.present;
+                  user.name.should.be.equal('Matias');
+                  user.password.should.not.be.equal('passwordMP');
+                  user.isAdmin.should.be.equal(true);
+                });
+                dictum.chai(res);
+                done();
+              });
+            });
         });
       })
     );

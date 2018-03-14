@@ -82,19 +82,34 @@ exports.getAllUsers = (req, res, next) => {
     });
 };
 
-exports.getBoughtAlbums = (req, res, next) => {
-  const userIdRequest = parseInt(req.params.user_id, 10);
-  const userIdDataBase = req.userAuthenticated.dataValues.id;
-  if (userIdRequest !== userIdDataBase) {
-    return next(errors.noUserEqual);
+exports.createUserAdmin = (req, res, next) => {
+  const isAdmin = req.userAuthenticated.dataValues.isAdmin;
+  const userParams = req.body
+    ? {
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
+        password: req.body.password
+      }
+    : {};
+  if (!isAdmin) {
+    next(errors.isNotAdmin);
   } else {
     userService
-      .getAlbumsMe(userIdDataBase)
-      .then(albums => {
-        res.status(201).send({ albums });
+      .createUserAdmin(userParams)
+      .then(user => {
+        logger.info(`The admin ${user.name} ${user.surname} was created succesfully`);
+        res.status(201).send({
+          name: user.name,
+          surname: user.surname,
+          email: user.email,
+          isAdmin: user.isAdmin
+        });
       })
       .catch(err => {
-        return next(err);
+        logger.error('the admin User was not created');
+        res.status(422).send(err.message);
+        next(err);
       });
   }
 };

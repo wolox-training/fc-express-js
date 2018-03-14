@@ -1,6 +1,5 @@
 const User = require('../models').User,
   logger = require('../logger'),
-  Album = require('../models').Album,
   errors = require('../errors');
 
 const getOne = email => {
@@ -14,13 +13,25 @@ exports.getByEmail = email => {
   return getOne({ email });
 };
 
-exports.getAlbumsMe = userId => {
-  return Album.findAll({
-    attributes: ['userId', 'albumId', 'title'],
-    where: {
-      userId
-    }
-  }).catch(err => {
+exports.createUserAdmin = user => {
+  return User.findOrCreate({
+    where: { email: user.email },
+    defaults: { name: user.name, surname: user.surname, password: user.password, isAdmin: true }
+  })
+    .then(([admin, isNewUser]) => {
+      if (!isNewUser) {
+        return admin.update({ isAdmin: true });
+      }
+      return admin;
+    })
+    .catch(err => {
+      throw errors.databaseError;
+    });
+};
+
+exports.update = (isAdmin, user) => {
+  // UPDATE Users SET isAdmin = true WHERE email= 'email@wolox.com.ar;
+  return User.update({ isAdmin: true }, { where: { email: user.email } }).catch(err => {
     throw errors.databaseError;
   });
 };

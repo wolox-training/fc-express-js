@@ -5,6 +5,7 @@ const chai = require('chai'),
   expect = chai.expect,
   should = chai.should(),
   nock = require('nock'),
+  Album = require('./../app/models').Album,
   sessionManager = require('./../app/services/sessionManager'),
   User = require('./../app/models').User;
 
@@ -115,17 +116,18 @@ describe('/albums/:id POST', () => {
         chai
           .request(server)
           .post('/albums/105')
+          .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
           .catch(err => {
-            err.should.have.status(401);
+            err.should.have.status(404);
             err.response.should.be.json;
-            err.response.body.should.have.property('message');
+            err.response.body.should.have.property('error');
             done();
           });
       })
     );
   });
 
-  it.only('should return error for album with id 1 because the album has been already bought', done => {
+  it('should return error for album with id 1 because the album has been already bought', done => {
     User.create({
       name: 'Franco',
       surname: 'Coronel',
@@ -148,5 +150,50 @@ describe('/albums/:id POST', () => {
           });
       })
     );
+  });
+});
+
+describe('/users/:user_id/albums GET', () => {
+  let request;
+  let user;
+  beforeEach(done => {
+    User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC'
+    }).then(newUser => {
+      user = newUser;
+      Album.create({ userId: user.id, albumId: 1, title: 'title test' }).then(() => {
+        Album.create({ userId: user.id, albumId: 2, title: 'title test 2' }).then(() => {
+          request = chai.request(server).get(`/users/${user.id}/albums`);
+          done();
+        });
+      });
+    });
+  });
+
+  it(`should fail because ${sessionManager.HEADER_NAME} header is not being sent`, done => {
+    request.catch(err => {
+      err.should.have.status(401);
+      done();
+    });
+  });
+
+  it('should return all albums bought', done => {
+    successfullLogin().then(loginRes => {
+      request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).then(res => {
+        res.should.have.status(201);
+        res.should.be.json;
+        res.body.should.have.property('albums');
+        res.body.albums.should.be.array;
+        res.body.albums.should.have.lengthOf(2);
+        res.body.albums[0].should.have.property('albumId');
+        res.body.albums[0].should.have.property('title');
+        res.body.albums[0].should.have.property('userId');
+        dictum.chai(res);
+        done();
+      });
+    });
   });
 });

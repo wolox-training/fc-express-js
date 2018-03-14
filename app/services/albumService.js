@@ -35,3 +35,14 @@ exports.create = (userId, title, albumId) => {
     throw errors.databaseError;
   });
 };
+
+exports.getAlbumsMe = userId => {
+  return Album.findAll({
+    attributes: ['userId', 'albumId', 'title'],
+    where: {
+      userId
+    }
+  }).catch(err => {
+    throw errors.databaseError;
+  });
+};

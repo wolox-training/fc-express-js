@@ -1,4 +1,21 @@
-<html><head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" /><script src="https://code.jquery.com/jquery-1.12.2.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script><style> pre { width: 95%; } </style></head><body><div class="container"><div class="jumbotron"><h1>Users</h1></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-session-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-session-POST" href="#collapse-users-session-POST">POST /users/session</a></h4></div><div id="collapse-users-session-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-session-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
+<html><head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" /><script src="https://code.jquery.com/jquery-1.12.2.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script><style> pre { width: 95%; } </style></head><body><div class="container"><div class="jumbotron"><h1>Users</h1></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-1-albums-GET"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-1-albums-GET" href="#collapse-users-1-albums-GET">GET /users/1/albums</a></h4></div><div id="collapse-users-1-albums-GET" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-1-albums-GET"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
+  "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZyYW5jby5jb3JvbmVsQHdvbG94LmNvbS5hciJ9.tGvX0jOsQZtmxyt3FsO-JlNvPxXXxFwdEyw4gcfIXjo"
+}</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 201</h5><h5>Headers</h5><pre>{
+  "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZyYW5jby5jb3JvbmVsQHdvbG94LmNvbS5hciJ9.tGvX0jOsQZtmxyt3FsO-JlNvPxXXxFwdEyw4gcfIXjo"
+}</pre><h5>Body</h5><pre>{
+  "albums": [
+    {
+      "userId": 1,
+      "albumId": 1,
+      "title": "title test"
+    },
+    {
+      "userId": 1,
+      "albumId": 2,
+      "title": "title test 2"
+    }
+  ]
+}</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-session-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-session-POST" href="#collapse-users-session-POST">POST /users/session</a></h4></div><div id="collapse-users-session-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-session-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
   "content-type": "application/json",
   "content-length": 63
 }</pre><h5>Body</h5><pre>{
@@ -12,9 +29,10 @@
   "name": "Franco",
   "surname": "Coronel",
   "email": "franco.coronel@wolox.com.ar",
-  "password": "$2a$08$k3pUm696u8MA5je8sOiMeelye5ZrH40s7vyLcFrpDXd25Cv33lsNC",
-  "createdAt": "2018-03-13T12:49:20.699Z",
-  "updatedAt": "2018-03-13T12:49:20.699Z"
+  "isAdmin": false,
+  "password": "$2a$08$qHBt3EP3wPg9yOJIh3xOmOkmftmxgB8f/aSJVR7wW5bvps3fXxonC",
+  "createdAt": "2018-03-14T12:28:22.980Z",
+  "updatedAt": "2018-03-14T12:28:22.980Z"
 }</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-POST" href="#collapse-users-POST">POST /users</a></h4></div><div id="collapse-users-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
   "content-type": "application/json",
   "content-length": 99

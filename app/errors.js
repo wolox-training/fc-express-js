@@ -41,11 +41,16 @@ exports.alreadyBought = {
 };
 
 exports.albumsProviderFail = {
-  statusCode: 500,
+  statusCode: 422,
   message: 'The request to the albums provider failed.'
 };
 
 exports.noUserEqual = {
-  statusCode: 500,
+  statusCode: 422,
   message: 'The Id of request is not equal to the user authenticated.'
+};
+
+exports.isNotAdmin = {
+  statusCode: 422,
+  message: 'The user is not an user administrator.'
 };
