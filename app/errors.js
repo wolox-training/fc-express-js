@@ -8,11 +8,9 @@ exports.invalidEmail = {
   message: 'Invalid email, it must be a wolox domain.'
 };
 
-exports.databaseError = error => {
-  return {
-    statusCode: 400,
-    message: error.message
-  };
+exports.databaseError = {
+  statusCode: 400,
+  message: 'Error in the Database'
 };
 
 exports.defaultError = message => {
@@ -20,4 +18,19 @@ exports.defaultError = message => {
     statusCode: 500,
     message
   };
+};
+
+exports.invalidCredentials = {
+  statusCode: 401,
+  message: 'Invalid email or password, check if you wrote it correctly.'
+};
+
+exports.invalidPassword = {
+  statusCode: 401,
+  message: 'Invalid password, check if you wrote it correctly.'
+};
+
+exports.albumsProviderFail = {
+  statusCode: 500,
+  message: 'The request to the albums provider failed.'
 };
