@@ -1,6 +1,5 @@
 const axios = require('axios'),
   Album = require('../models').Album,
-  User = require('../models').User,
   errors = require('../errors'),
   logger = require('../logger'),
   albumService = require('../services/albumService');

@@ -36,7 +36,7 @@ exports.noAlbum = {
 };
 
 exports.alreadyBought = {
-  statusCode: 401,
+  statusCode: 404,
   message: 'The user has already bought the book before.'
 };
 
