@@ -41,7 +41,7 @@ exports.alreadyBought = {
 };
 
 exports.albumsProviderFail = {
-  statusCode: 422,
+  statusCode: 504,
   message: 'The request to the albums provider failed.'
 };
 
@@ -53,11 +53,6 @@ exports.noUserEqual = {
 exports.isNotAdmin = {
   statusCode: 422,
   message: 'The user is not an user administrator.'
-};
-
-exports.photosOfAlbumsProviderFail = {
-  statusCode: 422,
-  message: 'The request to the photos of albums provider failed.'
 };
 
 exports.noAlbumBought = albumId => {
