@@ -64,10 +64,20 @@ describe('/albums GET', () => {
 });
 
 describe('/albums/:id POST', () => {
-  let request;
+  let request, userCreation, user;
   beforeEach(done => {
     request = chai.request(server).post('/albums/1');
-    done();
+    userCreation = User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC'
+    }).then(newUser => {
+      user = newUser;
+      Album.create({ userId: user.id, albumId: 2, title: 'title test' }).then(() => {
+        done();
+      });
+    });
   });
 
   it(`should fail because ${sessionManager.HEADER_NAME} header is not being sent`, done => {
@@ -85,71 +95,56 @@ describe('/albums/:id POST', () => {
           title: 'quidem molestiae enim'
         }
       ]);
-    User.create({
-      name: 'Franco',
-      surname: 'Coronel',
-      email: 'franco.coronel@wolox.com.ar',
-      password: 'passwordFC'
-    }).then(
-      successfullLogin().then(loginRes => {
-        request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).then(res => {
-          res.should.have.status(200);
-          res.should.be.json;
-          res.body.should.have.property('userId');
-          res.body.should.have.property('title');
-          res.body.should.have.property('albumId');
-          dictum.chai(res);
-          done();
-        });
-      })
-    );
+    successfullLogin().then(loginRes => {
+      request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).then(res => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.have.property('userId');
+        res.body.should.have.property('title');
+        res.body.should.have.property('albumId');
+        dictum.chai(res);
+        done();
+      });
+    });
   });
 
   it('should return error for album with id 105 because the album does not exist', done => {
-    User.create({
-      name: 'Franco',
-      surname: 'Coronel',
-      email: 'franco.coronel@wolox.com.ar',
-      password: 'passwordFC'
-    }).then(
-      successfullLogin().then(loginRes => {
-        chai
-          .request(server)
-          .post('/albums/105')
-          .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
-          .catch(err => {
-            err.should.have.status(404);
-            err.response.should.be.json;
-            err.response.body.should.have.property('error');
-            done();
-          });
-      })
-    );
+    successfullLogin().then(loginRes => {
+      chai
+        .request(server)
+        .post('/albums/105')
+        .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
+        .catch(err => {
+          err.should.have.status(404);
+          err.response.should.be.json;
+          err.response.body.should.have.property('error');
+          done();
+        });
+    });
   });
 
   it('should return error for album with id 1 because the album has been already bought', done => {
-    User.create({
-      name: 'Franco',
-      surname: 'Coronel',
-      email: 'franco.coronel@wolox.com.ar',
-      password: 'passwordFC'
-    }).then(
-      successfullLogin().then(loginRes => {
-        request
-          .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
-          .then(albumBought => {
-            chai
-              .request(server)
-              .post('/albums?id=1')
-              .catch(err => {
-                err.should.have.status(404);
-                err.response.should.be.json;
-                err.response.body.should.have.property('message');
-                done();
-              });
-          });
-      })
-    );
+    const albumsNock = nock('https://jsonplaceholder.typicode.com')
+      .get('/albums?id=2')
+      .reply(200, [
+        {
+          userId: '1',
+          albumId: '2',
+          title: 'sunt qui excepturi placeat culpa'
+        }
+      ]);
+    successfullLogin().then(loginRes => {
+      chai
+        .request(server)
+        .post('/albums/2')
+        .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
+        .catch(err => {
+          err.should.have.status(422);
+          err.response.should.be.json;
+          err.response.body.should.have.property('error');
+          done();
+        });
+    });
   });
 });
 
@@ -183,7 +178,7 @@ describe('/users/:user_id/albums GET', () => {
   it('should return all albums bought', done => {
     successfullLogin().then(loginRes => {
       request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).then(res => {
-        res.should.have.status(201);
+        res.should.have.status(200);
         res.should.be.json;
         res.body.should.have.property('albums');
         res.body.albums.should.be.array;
@@ -258,48 +253,34 @@ describe('/users/albums/:id/photos GET', () => {
           thumbnailUrl: 'http://placehold.it/150/aa8f2e'
         }
       ]);
-    User.create({
-      name: 'Franco',
-      surname: 'Coronel',
-      email: 'franco.coronel@wolox.com.ar',
-      password: 'passwordFC'
-    }).then(
-      successfullLogin().then(loginRes => {
-        request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).then(res => {
-          res.should.have.status(201);
-          res.should.be.json;
-          res.body.should.have.property('photos');
-          res.body.photos.should.be.array;
-          res.body.photos.should.have.lengthOf(4);
-          res.body.photos[0].should.have.property('albumId');
-          res.body.photos[0].should.have.property('id');
-          res.body.photos[0].should.have.property('title');
-          res.body.photos[0].should.have.property('url');
-          res.body.photos[0].should.have.property('thumbnailUrl');
-          dictum.chai(res);
-          done();
-        });
-      })
-    );
+    successfullLogin().then(loginRes => {
+      request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).then(res => {
+        res.should.have.status(201);
+        res.should.be.json;
+        res.body.should.have.property('photos');
+        res.body.photos.should.be.array;
+        res.body.photos.should.have.lengthOf(4);
+        res.body.photos[0].should.have.property('albumId');
+        res.body.photos[0].should.have.property('id');
+        res.body.photos[0].should.have.property('title');
+        res.body.photos[0].should.have.property('url');
+        res.body.photos[0].should.have.property('thumbnailUrl');
+        dictum.chai(res);
+        done();
+      });
+    });
   });
 
   it('should fail because the user has not bought this album yet', done => {
-    User.create({
-      name: 'Franco',
-      surname: 'Coronel',
-      email: 'franco.coronel@wolox.com.ar',
-      password: 'passwordFC'
-    }).then(
-      successfullLogin().then(loginRes => {
-        requestNotAlbumBought
-          .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
-          .catch(err => {
-            err.response.should.have.status(404);
-            err.response.should.be.json;
-            err.response.body.should.have.property('error');
-            done();
-          });
-      })
-    );
+    successfullLogin().then(loginRes => {
+      requestNotAlbumBought
+        .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
+        .catch(err => {
+          err.response.should.have.status(404);
+          err.response.should.be.json;
+          err.response.body.should.have.property('error');
+          done();
+        });
+    });
   });
 });

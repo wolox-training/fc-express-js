@@ -36,13 +36,14 @@ exports.create = (userId, title, albumId) => {
   });
 };
 
-exports.getAlbumsMe = userId => {
+exports.getAlbumsForUserId = userId => {
   return Album.findAll({
     attributes: ['userId', 'albumId', 'title'],
     where: {
       userId
     }
   }).catch(err => {
+    logger.error('Error in the Database, can not find the user id');
     throw errors.databaseError;
   });
 };

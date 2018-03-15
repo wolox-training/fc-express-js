@@ -4,6 +4,7 @@ const errors = require('../errors'),
   logger = require('../logger'),
   User = require('../models').User,
   bcrypt = require('bcrypt'),
+  moment = require('moment'),
   userService = require('../services/userService'),
   sessionManager = require('../services/sessionManager');
 
@@ -19,7 +20,13 @@ exports.login = (req, res, next) => {
     if (userInBD) {
       bcrypt.compare(userLogin.password, userInBD.password).then(isValid => {
         if (isValid) {
-          const auth = sessionManager.encode({ email: userInBD.email });
+          const payload = {
+            email: userInBD.email,
+            expirationTime: moment()
+              .add(10, 'minutes')
+              .unix()
+          };
+          const auth = sessionManager.encode(payload);
           res.status(200);
           res.set(sessionManager.HEADER_NAME, auth);
           logger.info(`The user ${userInBD.email} was logged in succesfull`);

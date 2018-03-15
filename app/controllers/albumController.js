@@ -39,6 +39,7 @@ exports.buyAlbum = (req, res, next) => {
               albumProvider.id
             } `
           );
+          logger.error();
           return next(errors.alreadyBought);
         }
       });
@@ -55,9 +56,9 @@ exports.getBoughtAlbums = (req, res, next) => {
     return next(errors.noUserEqual);
   } else {
     albumService
-      .getAlbumsMe(userIdDataBase)
+      .getAlbumsForUserId(userIdDataBase)
       .then(albums => {
-        res.status(201).send({ albums });
+        res.status(200).send({ albums });
       })
       .catch(err => {
         return next(err);
