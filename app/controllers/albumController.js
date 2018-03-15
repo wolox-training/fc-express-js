@@ -73,19 +73,12 @@ exports.seePhotos = (req, res, next) => {
     .getAlbum(user.id, albumId)
     .then(existingPurchase => {
       if (existingPurchase) {
-        albumService
-          .getPhotosOfAlbum(existingPurchase.albumId)
-          .then(photos => {
-            res.status(201).send({ photos });
-          })
-          .catch(err => {
-            return next(err);
-          });
+        albumService.getPhotosOfAlbum(existingPurchase.albumId).then(photos => {
+          res.status(200).send({ photos });
+        });
       } else {
         return next(errors.noAlbumBought(albumId));
       }
     })
-    .catch(err => {
-      return next(err);
-    });
+    .catch(next);
 };
