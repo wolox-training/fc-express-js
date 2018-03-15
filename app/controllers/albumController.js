@@ -55,7 +55,7 @@ exports.getBoughtAlbums = (req, res, next) => {
     return next(errors.noUserEqual);
   } else {
     albumService
-      .getAlbumsMe(userIdDataBase)
+      .getAlbumsForUserId(userIdDataBase)
       .then(albums => {
         res.status(200).send({ albums });
       })

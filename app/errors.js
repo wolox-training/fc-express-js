@@ -46,12 +46,12 @@ exports.albumsProviderFail = {
 };
 
 exports.noUserEqual = {
-  statusCode: 422,
+  statusCode: 401,
   message: 'The Id of request is not equal to the user authenticated.'
 };
 
 exports.isNotAdmin = {
-  statusCode: 422,
+  statusCode: 401,
   message: 'The user is not an user administrator.'
 };
 

@@ -37,7 +37,7 @@ exports.create = (userId, title, albumId) => {
   });
 };
 
-exports.getAlbumsMe = userId => {
+exports.getAlbumsForUserId = userId => {
   return Album.findAll({
     attributes: ['userId', 'albumId', 'title'],
     where: {

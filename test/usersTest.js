@@ -272,3 +272,98 @@ describe('/users GET', () => {
     );
   });
 });
+
+describe('/admin/users POST', () => {
+  let userAdminRequest;
+  let userCreation;
+  beforeEach(done => {
+    userAdminRequest = chai
+      .request(server)
+      .post('/admin/users')
+      .send({
+        name: 'Franco',
+        surname: 'Perez',
+        email: 'franco.perez@wolox.com.ar',
+        password: 'passwordFP'
+      });
+    userCreation = User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC'
+    }).then(newUser => {
+      done();
+    });
+  });
+
+  it(`should fail because ${sessionManager.HEADER_NAME} header is not being sent`, done => {
+    userAdminRequest.catch(err => {
+      err.should.have.status(401);
+      done();
+    });
+  });
+
+  it(`should fail because is not an admin user`, done => {
+    const AdmiUuserCreation = User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC',
+      isAdmin: true
+    }).then(
+      successfullLogin('franco.coronel@wolox.com.ar', 'passwordFC').then(loginRes => {
+        User.count().then(oldCount => {
+          userAdminRequest
+            .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
+            .catch(err => {
+              err.should.have.status(401);
+              err.response.should.be.json;
+              err.response.body.should.have.property('error');
+              User.count().then(newCount => {
+                newCount.should.be.equal(oldCount);
+                done();
+              });
+            });
+        });
+      })
+    );
+  });
+
+  it('should create an admin user', done => {
+    const AdminuserCreation = User.create({
+      name: 'Matias',
+      surname: 'Pizzagalli',
+      email: 'matias.pizzagalli@wolox.com.ar',
+      password: 'passwordMP',
+      isAdmin: true
+    }).then(newUser => {
+      successfullLogin(newUser.email, 'passwordMP').then(loginRes => {
+        User.count().then(oldCount => {
+          userAdminRequest
+            .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
+            .then(res => {
+              res.should.have.status(201);
+              res.should.be.json;
+              res.body.should.have.property('name');
+              res.body.should.have.property('surname');
+              res.body.should.have.property('email');
+              res.body.should.have.property('isAdmin');
+              User.count().then(newCount => {
+                newCount.should.be.equal(oldCount + 1);
+                User.findOne({ where: { email: 'franco.perez@wolox.com.ar' } }).then(user => {
+                  user.should.be.present;
+                  user.name.should.be.equal('Franco');
+                  user.surname.should.be.equal('Perez');
+                  user.password.should.not.be.equal('passwordFP');
+                  user.isAdmin.should.be.equal(true);
+                });
+                dictum.chai(res);
+                done();
+              });
+            });
+        });
+      });
+    });
+  });
+});
+
