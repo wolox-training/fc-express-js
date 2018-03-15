@@ -399,4 +399,3 @@ describe('Token expired /users GET', () => {
     );
   });
 });
-
