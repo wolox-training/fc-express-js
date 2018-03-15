@@ -36,7 +36,7 @@ exports.create = (userId, title, albumId) => {
   });
 };
 
-exports.getAlbumsMe = userId => {
+exports.getAlbumsForUserId = userId => {
   return Album.findAll({
     attributes: ['userId', 'albumId', 'title'],
     where: {
@@ -51,10 +51,10 @@ exports.getPhotosOfAlbum = id => {
   return axios
     .get(`https://jsonplaceholder.typicode.com/photos?albumId=${id}`)
     .then(photos => {
-      // The album provider always returns an array of albums, so I return the first
       return photos.data;
     })
     .catch(err => {
-      throw errors.photosOfAlbumsProviderFail;
+      logger.error('The request to the Provider of photos failed');
+      throw errors.albumsProviderFail;
     });
 };

@@ -9,11 +9,11 @@ const chai = require('chai'),
 
 chai.use(chaiHttp);
 
-const successfullLogin = () => {
+const successfullLogin = (email, password) => {
   return chai
     .request(server)
     .post('/users/session')
-    .send({ email: 'franco.coronel@wolox.com.ar', password: 'passwordFC' });
+    .send({ email, password });
 };
 
 describe('/users/session POST', () => {
@@ -26,8 +26,9 @@ describe('/users/session POST', () => {
       surname: 'Coronel',
       email: 'franco.coronel@wolox.com.ar',
       password: 'passwordFC'
+    }).then(newUser => {
+      done();
     });
-    done();
   });
 
   it('should fail login because of invalid email', done => {
@@ -232,9 +233,17 @@ describe('/users POST', () => {
 
 describe('/users GET', () => {
   let request;
+  let userCreation;
   beforeEach(done => {
     request = chai.request(server).get('/users');
-    done();
+    userCreation = User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC'
+    }).then(newUser => {
+      done();
+    });
   });
 
   it(`should fail because ${sessionManager.HEADER_NAME} header is not being sent`, done => {
@@ -245,13 +254,8 @@ describe('/users GET', () => {
   });
 
   it('should return all users', done => {
-    User.create({
-      name: 'Franco',
-      surname: 'Coronel',
-      email: 'franco.coronel@wolox.com.ar',
-      password: 'passwordFC'
-    }).then(
-      successfullLogin().then(loginRes => {
+    userCreation.then(
+      successfullLogin('franco.coronel@wolox.com.ar', 'passwordFC').then(loginRes => {
         request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).then(res => {
           res.should.have.status(201);
           res.should.be.json;
@@ -271,18 +275,25 @@ describe('/users GET', () => {
 
 describe('/admin/users POST', () => {
   let userAdminRequest;
+  let userCreation;
   beforeEach(done => {
     userAdminRequest = chai
       .request(server)
       .post('/admin/users')
       .send({
-        name: 'Matias',
-        surname: 'Pizzagalli',
-        email: 'matias.pizzagalli@wolox.com.ar',
-        password: 'passwordMP'
+        name: 'Franco',
+        surname: 'Perez',
+        email: 'franco.perez@wolox.com.ar',
+        password: 'passwordFP'
       });
-
-    done();
+    userCreation = User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC'
+    }).then(newUser => {
+      done();
+    });
   });
 
   it(`should fail because ${sessionManager.HEADER_NAME} header is not being sent`, done => {
@@ -293,18 +304,19 @@ describe('/admin/users POST', () => {
   });
 
   it(`should fail because is not an admin user`, done => {
-    User.create({
+    const AdmiUuserCreation = User.create({
       name: 'Franco',
       surname: 'Coronel',
       email: 'franco.coronel@wolox.com.ar',
-      password: 'passwordFC'
+      password: 'passwordFC',
+      isAdmin: true
     }).then(
-      successfullLogin().then(loginRes => {
+      successfullLogin('franco.coronel@wolox.com.ar', 'passwordFC').then(loginRes => {
         User.count().then(oldCount => {
           userAdminRequest
             .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
             .catch(err => {
-              err.should.have.status(422);
+              err.should.have.status(401);
               err.response.should.be.json;
               err.response.body.should.have.property('error');
               User.count().then(newCount => {
@@ -318,14 +330,14 @@ describe('/admin/users POST', () => {
   });
 
   it('should create an admin user', done => {
-    User.create({
-      name: 'Franco',
-      surname: 'Coronel',
-      email: 'franco.coronel@wolox.com.ar',
-      password: 'passwordFC',
+    const AdminuserCreation = User.create({
+      name: 'Matias',
+      surname: 'Pizzagalli',
+      email: 'matias.pizzagalli@wolox.com.ar',
+      password: 'passwordMP',
       isAdmin: true
-    }).then(
-      successfullLogin().then(loginRes => {
+    }).then(newUser => {
+      successfullLogin(newUser.email, 'passwordMP').then(loginRes => {
         User.count().then(oldCount => {
           userAdminRequest
             .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
@@ -338,10 +350,11 @@ describe('/admin/users POST', () => {
               res.body.should.have.property('isAdmin');
               User.count().then(newCount => {
                 newCount.should.be.equal(oldCount + 1);
-                User.findOne({ where: { email: 'matias.pizzagalli@wolox.com.ar' } }).then(user => {
+                User.findOne({ where: { email: 'franco.perez@wolox.com.ar' } }).then(user => {
                   user.should.be.present;
-                  user.name.should.be.equal('Matias');
-                  user.password.should.not.be.equal('passwordMP');
+                  user.name.should.be.equal('Franco');
+                  user.surname.should.be.equal('Perez');
+                  user.password.should.not.be.equal('passwordFP');
                   user.isAdmin.should.be.equal(true);
                 });
                 dictum.chai(res);
@@ -349,7 +362,7 @@ describe('/admin/users POST', () => {
               });
             });
         });
-      })
-    );
+      });
+    });
   });
 });

@@ -28,10 +28,3 @@ exports.createUserAdmin = user => {
       throw errors.databaseError;
     });
 };
-
-exports.update = (isAdmin, user) => {
-  // UPDATE Users SET isAdmin = true WHERE email= 'email@wolox.com.ar;
-  return User.update({ isAdmin: true }, { where: { email: user.email } }).catch(err => {
-    throw errors.databaseError;
-  });
-};
