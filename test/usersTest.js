@@ -5,8 +5,6 @@ const chai = require('chai'),
   expect = chai.expect,
   should = chai.should(),
   sessionManager = require('./../app/services/sessionManager'),
-  mockDate = require('mockdate'),
-  moment = require('moment'),
   User = require('./../app/models').User;
 
 chai.use(chaiHttp);
