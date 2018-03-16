@@ -391,3 +391,34 @@ describe('Token expired /users GET', () => {
     );
   });
 });
+
+describe('/users/sessions/invalidate_all POST', () => {
+  let request;
+  let userCreation;
+  beforeEach(done => {
+    request = chai.request(server).get('/users');
+    userCreation = User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC'
+    }).then(newUser => {
+      done();
+    });
+  });
+
+  it('Token is changed', done => {
+    userCreation.then(
+      successfullLogin('franco.coronel@wolox.com.ar', 'passwordFC').then(loginRes => {
+        mockDate.set(moment().add(1, 'days'));
+        request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).catch(err => {
+          err.response.should.have.status(401);
+          err.response.should.be.json;
+          err.response.body.should.have.property('message');
+          mockDate.reset();
+          done();
+        });
+      })
+    );
+  });
+});

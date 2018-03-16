@@ -45,10 +45,16 @@ exports.getAlbumsForUserId = (userId, pagination) => {
     },
     limit: pagination.limit || 10,
     offset: pagination.offset || 0
-  }).catch(err => {
-    logger.error('Error in the Database, can not find the user id');
-    throw errors.databaseError;
-  });
+  })
+    .then(albums => {
+      return Album.count({ where: { userId } }).then(count => {
+        return { albums, totalCount: count };
+      });
+    })
+    .catch(err => {
+      logger.error('Error in the Database, can not find the user id');
+      throw errors.databaseError;
+    });
 };
 
 exports.getPhotosOfAlbum = id => {

@@ -9,7 +9,7 @@ exports.secure = (req, res, next) => {
   if (auth) {
     const payload = sessionManager.decode(auth);
     User.findOne({ where: { email: payload.email } }).then(userAuthenticated => {
-      if (!userAuthenticated) {
+      if (!userAuthenticated || payload.numberOfValidToken !== userAuthenticated.validToken) {
         res.status(401).send({ message: 'User is not authenticated' });
       } else {
         if (payload.expirationTime <= moment().unix()) {
@@ -18,6 +18,7 @@ exports.secure = (req, res, next) => {
         }
         req.userAuthenticated = userAuthenticated;
         req.isAdmin = true;
+        req.tokenExpirationDate = payload.expirationTime;
         next();
       }
     });
