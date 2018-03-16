@@ -92,7 +92,5 @@ exports.seePhotos = (req, res, next) => {
         return next(errors.noAlbumBought(albumId));
       }
     })
-    .catch(err => {
-      return next(err);
-    });
+    .catch(next);
 };
