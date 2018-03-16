@@ -10,6 +10,7 @@ exports.secure = (req, res, next) => {
       if (!userAuthenticated) {
         res.status(401).send({ message: 'User is not authenticated' });
       } else {
+        req.userAuthenticated = userAuthenticated;
         next();
       }
     });

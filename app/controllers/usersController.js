@@ -58,8 +58,8 @@ exports.create = (req, res, next) => {
         logger.error(err.message);
         res.status(422).send(err.message);
       } else {
-        logger.error(errors.databaseError(err));
-        res.status(400).send(errors.databaseError(err));
+        logger.error(errors.databaseError);
+        res.status(400).send(errors.databaseError);
       }
     });
 };

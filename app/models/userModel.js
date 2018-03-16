@@ -45,7 +45,7 @@ module.exports = function(sequelize, DataTypes) {
     {
       classMethods: {
         associate(models) {
-          // associate: models => {}
+          User.hasMany(models.Album, { as: 'albums', foreignKey: 'userId' });
         }
       },
       hooks: {

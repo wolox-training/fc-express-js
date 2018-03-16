@@ -9,11 +9,11 @@ const chai = require('chai'),
 
 chai.use(chaiHttp);
 
-const successfullLogin = cb => {
+const successfullLogin = (email, password) => {
   return chai
     .request(server)
     .post('/users/session')
-    .send({ email: 'franco.coronel@wolox.com.ar', password: 'passwordFC' });
+    .send({ email, password });
 };
 
 describe('/users/session POST', () => {
@@ -26,8 +26,9 @@ describe('/users/session POST', () => {
       surname: 'Coronel',
       email: 'franco.coronel@wolox.com.ar',
       password: 'passwordFC'
+    }).then(newUser => {
+      done();
     });
-    done();
   });
 
   it('should fail login because of invalid email', done => {
@@ -183,6 +184,7 @@ describe('/users POST', () => {
         });
     });
   });
+
   it('Should fail because the password hasnt 8 characters or more ', done => {
     User.count().then(oldCount => {
       request
@@ -231,9 +233,17 @@ describe('/users POST', () => {
 
 describe('/users GET', () => {
   let request;
+  let userCreation;
   beforeEach(done => {
     request = chai.request(server).get('/users');
-    done();
+    userCreation = User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC'
+    }).then(newUser => {
+      done();
+    });
   });
 
   it(`should fail because ${sessionManager.HEADER_NAME} header is not being sent`, done => {
@@ -244,13 +254,8 @@ describe('/users GET', () => {
   });
 
   it('should return all users', done => {
-    User.create({
-      name: 'Franco',
-      surname: 'Coronel',
-      email: 'franco.coronel@wolox.com.ar',
-      password: 'passwordFC'
-    }).then(
-      successfullLogin().then(loginRes => {
+    userCreation.then(
+      successfullLogin('franco.coronel@wolox.com.ar', 'passwordFC').then(loginRes => {
         request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).then(res => {
           res.should.have.status(201);
           res.should.be.json;

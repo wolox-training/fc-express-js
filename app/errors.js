@@ -30,6 +30,16 @@ exports.invalidPassword = {
   message: 'Invalid password, check if you wrote it correctly.'
 };
 
+exports.noAlbum = {
+  statusCode: 404,
+  message: 'Invalid Album, the album id does not exist.'
+};
+
+exports.alreadyBought = {
+  statusCode: 422,
+  message: 'The user has already bought the book before.'
+};
+
 exports.albumsProviderFail = {
   statusCode: 500,
   message: 'The request to the albums provider failed.'
