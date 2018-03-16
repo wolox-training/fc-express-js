@@ -43,6 +43,7 @@ exports.getAlbumsForUserId = userId => {
       userId
     }
   }).catch(err => {
+    logger.error(`Error in the dataBase, can not select all albums bought by user ${userId}`);
     throw errors.databaseError;
   });
 };
