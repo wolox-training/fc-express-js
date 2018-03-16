@@ -6,6 +6,7 @@ const errors = require('../errors'),
   bcrypt = require('bcrypt'),
   moment = require('moment'),
   userService = require('../services/userService'),
+  tokenExpirationTime = require('./../../config').common.tokenExpiration,
   sessionManager = require('../services/sessionManager');
 
 exports.login = (req, res, next) => {
@@ -23,7 +24,7 @@ exports.login = (req, res, next) => {
           const payload = {
             email: userInBD.email,
             expirationTime: moment()
-              .add(10, 'minutes')
+              .add(tokenExpirationTime, 'minutes')
               .unix()
           };
           const auth = sessionManager.encode(payload);

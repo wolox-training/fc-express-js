@@ -39,7 +39,6 @@ exports.buyAlbum = (req, res, next) => {
               albumProvider.id
             } `
           );
-          logger.error();
           return next(errors.alreadyBought);
         }
       });
