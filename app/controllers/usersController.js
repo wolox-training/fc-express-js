@@ -6,6 +6,7 @@ const errors = require('../errors'),
   bcrypt = require('bcrypt'),
   moment = require('moment'),
   userService = require('../services/userService'),
+  tokenExpirationTime = require('./../../config').common.tokenExpiration,
   sessionManager = require('../services/sessionManager');
 
 exports.login = (req, res, next) => {
@@ -20,10 +21,11 @@ exports.login = (req, res, next) => {
     if (userInBD) {
       bcrypt.compare(userLogin.password, userInBD.password).then(isValid => {
         if (isValid) {
+          console.log(tokenExpirationTime);
           const payload = {
             email: userInBD.email,
             expirationTime: moment()
-              .add(10, 'minutes')
+              .add(tokenExpirationTime, 'minutes')
               .unix()
           };
           const auth = sessionManager.encode(payload);
@@ -72,8 +74,17 @@ exports.create = (req, res, next) => {
 };
 
 exports.getAllUsers = (req, res, next) => {
+  const paginationParams = req.query
+    ? {
+        limit: req.query.limit,
+        offset: req.query.offset
+      }
+    : {};
+
   User.findAll({
-    attributes: ['name', 'surname', 'email']
+    attributes: ['name', 'surname', 'email'],
+    limit: paginationParams.limit || 10,
+    offset: paginationParams.offset || 0
   })
     .then(users => {
       res.status(201);

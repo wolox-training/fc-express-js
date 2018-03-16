@@ -21,7 +21,7 @@
     "prestart": "npm run lint",
     "migrations": "./node_modules/.bin/sequelize db:migrate",
     "start": "./node_modules/.bin/nodemon --inspect app.js",
-    "test": "NODE_ENV=testing ./node_modules/mocha/bin/mocha --compilers js:babel-core/register test/app.js && npm run nsp" ,
+    "test": "NODE_ENV=testing ./node_modules/mocha/bin/mocha --compilers js:babel-core/register test/app.js && npm run nsp",
     "test-inspect": "NODE_ENV=testing node --inspect --debug-brk ./node_modules/mocha/bin/_mocha --compilers js:babel-core/register test/app.js"
   },
   "cacheDirectories": [
@@ -39,11 +39,13 @@
     "url": "https://github.com/wolox-training/fc-express-js/issues"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "bcrypt": "^1.0.1",
     "body-parser": "^1.14.2",
     "dotenv": "^4.0.0",
     "express": "^4.9.4",
     "jwt-simple": "^0.5.1",
+    "moment": "^2.21.0",
     "morgan": "^1.7.0",
     "pg": "^4.4.6",
     "rollbar": "^2.3.1",
@@ -51,8 +53,7 @@
     "sequelize-cli": "^2.8.0",
     "umzug": "^2.0.1",
     "winston": "^2.4.0",
-    "winston-daily-rotate-file": "^1.7.2",
-    "axios": "^0.18.0"
+    "winston-daily-rotate-file": "^1.7.2"
   },
   "devDependencies": {
     "babel": "6.3.13",
@@ -73,9 +74,8 @@
     "mocha": "^2.4.5",
     "mocha-lcov-reporter": "^1.2.0",
     "mockdate": "^2.0.2",
-    "moment": "^2.21.0",
+    "nock": "^9.x",
     "nodemon": "^1.11.0",
-    "nock":"^9.x",
     "nsp": "^2.6.2",
     "prettier": "^1.8.2",
     "prettier-eslint": "^8.2.1",
