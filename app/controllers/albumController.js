@@ -83,7 +83,7 @@ exports.seePhotos = (req, res, next) => {
         albumService
           .getPhotosOfAlbum(existingPurchase.albumId)
           .then(photos => {
-            res.status(201).send({ photos });
+            res.status(200).send({ photos });
           })
           .catch(err => {
             return next(err);

@@ -305,7 +305,7 @@ describe('/admin/users POST', () => {
     });
   });
 
-  it.only(`should fail because is not an admin user`, done => {
+  it(`should fail because is not an admin user`, done => {
     successfullLogin('franco.coronel@wolox.com.ar', 'passwordFC').then(loginRes => {
       User.count().then(oldCount => {
         userAdminRequest

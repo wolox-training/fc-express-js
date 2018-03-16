@@ -21,7 +21,6 @@ exports.login = (req, res, next) => {
     if (userInBD) {
       bcrypt.compare(userLogin.password, userInBD.password).then(isValid => {
         if (isValid) {
-          console.log(tokenExpirationTime);
           const payload = {
             email: userInBD.email,
             expirationTime: moment()
