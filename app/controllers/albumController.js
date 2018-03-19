@@ -63,8 +63,11 @@ exports.getBoughtAlbums = (req, res, next) => {
   } else {
     albumService
       .getAlbumsForUserId(userIdDataBase, paginationParams)
-      .then(albums => {
-        res.status(200).send({ albums });
+      .then(response => {
+        res.status(200).send({
+          albums: response.albums,
+          totalCount: response.totalCount
+        });
       })
       .catch(err => {
         return next(err);

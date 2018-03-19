@@ -224,9 +224,9 @@ describe('/users POST', () => {
               user.should.be.present;
               user.name.should.be.equal('Franco');
               user.password.should.not.be.equal('passwordFC');
+              dictum.chai(res);
+              done();
             });
-            dictum.chai(res);
-            done();
           });
         });
     });
@@ -493,6 +493,43 @@ describe('Pagination test', () => {
             res.body.users[4].email.should.be.equal('Rodrigo.Mansilla@wolox.com.ar');
             dictum.chai(res);
             done();
+          });
+      })
+    );
+  });
+});
+
+describe('/users/sessions/invalidate_all POST', () => {
+  let requestTokenInvalidation;
+  let userCreation;
+  let requestGetUsers;
+  beforeEach(done => {
+    requestTokenInvalidation = chai.request(server).post('/users/sessions/invalidate_all');
+    requestGetUsers = chai.request(server).get('/users');
+    userCreation = User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC'
+    }).then(newUser => {
+      done();
+    });
+  });
+
+  it('The request to list all users should fail because the session for user are invalidated', done => {
+    userCreation.then(
+      successfullLogin('franco.coronel@wolox.com.ar', 'passwordFC').then(loginRes => {
+        requestTokenInvalidation
+          .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
+          .then(tokenInvalidated => {
+            requestGetUsers
+              .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
+              .catch(err => {
+                err.response.should.have.status(401);
+                err.response.should.be.json;
+                err.response.body.should.have.property('message');
+                done();
+              });
           });
       })
     );
