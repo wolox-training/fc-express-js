@@ -12,3 +12,19 @@ const getOne = email => {
 exports.getByEmail = email => {
   return getOne({ email });
 };
+
+exports.createUserAdmin = user => {
+  return User.findOrCreate({
+    where: { email: user.email },
+    defaults: { name: user.name, surname: user.surname, password: user.password, isAdmin: true }
+  })
+    .then(([admin, isNewUser]) => {
+      if (!isNewUser) {
+        return admin.update({ isAdmin: true });
+      }
+      return admin;
+    })
+    .catch(err => {
+      throw errors.databaseError;
+    });
+};

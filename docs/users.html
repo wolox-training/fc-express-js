@@ -1,4 +1,56 @@
-<html><head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" /><script src="https://code.jquery.com/jquery-1.12.2.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script><style> pre { width: 95%; } </style></head><body><div class="container"><div class="jumbotron"><h1>Users</h1></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-session-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-session-POST" href="#collapse-users-session-POST">POST /users/session</a></h4></div><div id="collapse-users-session-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-session-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
+<html><head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" /><script src="https://code.jquery.com/jquery-1.12.2.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script><style> pre { width: 95%; } </style></head><body><div class="container"><div class="jumbotron"><h1>Users</h1></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-1-albums-GET"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-1-albums-GET" href="#collapse-users-1-albums-GET">GET /users/1/albums</a></h4></div><div id="collapse-users-1-albums-GET" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-1-albums-GET"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
+  "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZyYW5jby5jb3JvbmVsQHdvbG94LmNvbS5hciJ9.tGvX0jOsQZtmxyt3FsO-JlNvPxXXxFwdEyw4gcfIXjo"
+}</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 200</h5><h5>Headers</h5><pre>{
+  "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZyYW5jby5jb3JvbmVsQHdvbG94LmNvbS5hciJ9.tGvX0jOsQZtmxyt3FsO-JlNvPxXXxFwdEyw4gcfIXjo"
+}</pre><h5>Body</h5><pre>{
+  "albums": [
+    {
+      "userId": 1,
+      "albumId": 1,
+      "title": "title test"
+    },
+    {
+      "userId": 1,
+      "albumId": 2,
+      "title": "title test 2"
+    }
+  ]
+}</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-albums-1-photos-GET"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-albums-1-photos-GET" href="#collapse-users-albums-1-photos-GET">GET /users/albums/1/photos</a></h4></div><div id="collapse-users-albums-1-photos-GET" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-albums-1-photos-GET"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
+  "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZyYW5jby5jb3JvbmVsQHdvbG94LmNvbS5hciJ9.tGvX0jOsQZtmxyt3FsO-JlNvPxXXxFwdEyw4gcfIXjo"
+}</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 200</h5><h5>Headers</h5><pre>{
+  "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZyYW5jby5jb3JvbmVsQHdvbG94LmNvbS5hciJ9.tGvX0jOsQZtmxyt3FsO-JlNvPxXXxFwdEyw4gcfIXjo"
+}</pre><h5>Body</h5><pre>{
+  "photos": [
+    {
+      "albumId": 2,
+      "id": 51,
+      "title": "non sunt voluptatem placeat consequuntur rem incidunt",
+      "url": "http://placehold.it/600/8e973b",
+      "thumbnailUrl": "http://placehold.it/150/8e973b"
+    },
+    {
+      "albumId": 2,
+      "id": 52,
+      "title": "eveniet pariatur quia nobis reiciendis laboriosam ea",
+      "url": "http://placehold.it/600/121fa4",
+      "thumbnailUrl": "http://placehold.it/150/121fa4"
+    },
+    {
+      "albumId": 2,
+      "id": 53,
+      "title": "soluta et harum aliquid officiis ab omnis consequatur",
+      "url": "http://placehold.it/600/6efc5f",
+      "thumbnailUrl": "http://placehold.it/150/6efc5f"
+    },
+    {
+      "albumId": 2,
+      "id": 54,
+      "title": "ut ex quibusdam dolore mollitia",
+      "url": "http://placehold.it/600/aa8f2e",
+      "thumbnailUrl": "http://placehold.it/150/aa8f2e"
+    }
+  ]
+}</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-session-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-session-POST" href="#collapse-users-session-POST">POST /users/session</a></h4></div><div id="collapse-users-session-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-session-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
   "content-type": "application/json",
   "content-length": 63
 }</pre><h5>Body</h5><pre>{
@@ -12,9 +64,10 @@
   "name": "Franco",
   "surname": "Coronel",
   "email": "franco.coronel@wolox.com.ar",
-  "password": "$2a$08$V9Xf13hepQVViodpcl9FwerBiI7RDpXzQMN5rhHZSoR9XOSaTPmuW",
-  "createdAt": "2018-03-15T21:07:17.793Z",
-  "updatedAt": "2018-03-15T21:07:17.793Z"
+  "isAdmin": false,
+  "password": "$2a$08$0XqwIc5WOgN3suCySKn82O7Rj.vvFelrKi0q9AC.A.Z.uLb8pmKSa",
+  "createdAt": "2018-03-16T17:40:21.709Z",
+  "updatedAt": "2018-03-16T17:40:21.709Z"
 }</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-POST" href="#collapse-users-POST">POST /users</a></h4></div><div id="collapse-users-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
   "content-type": "application/json",
   "content-length": 99

@@ -35,3 +35,27 @@ exports.create = (userId, title, albumId) => {
     throw errors.databaseError;
   });
 };
+
+exports.getAlbumsForUserId = userId => {
+  return Album.findAll({
+    attributes: ['userId', 'albumId', 'title'],
+    where: {
+      userId
+    }
+  }).catch(err => {
+    logger.error(`Error in the dataBase, can not select all albums bought by user ${userId}`);
+    throw errors.databaseError;
+  });
+};
+
+exports.getPhotosOfAlbum = id => {
+  return axios
+    .get(`https://jsonplaceholder.typicode.com/photos?albumId=${id}`)
+    .then(photos => {
+      return photos.data;
+    })
+    .catch(err => {
+      logger.error('The request to the Provider of photos failed');
+      throw errors.albumsProviderFail;
+    });
+};

@@ -47,3 +47,44 @@ exports.buyAlbum = (req, res, next) => {
       return next(error);
     });
 };
+
+exports.getBoughtAlbums = (req, res, next) => {
+  const userIdRequest = parseInt(req.params.user_id, 10);
+  const userIdDataBase = req.userAuthenticated.dataValues.id;
+  if (userIdRequest !== userIdDataBase) {
+    return next(errors.noUserEqual);
+  } else {
+    albumService
+      .getAlbumsForUserId(userIdDataBase)
+      .then(albums => {
+        res.status(200).send({ albums });
+      })
+      .catch(err => {
+        return next(err);
+      });
+  }
+};
+
+exports.seePhotos = (req, res, next) => {
+  const albumId = req.params.id;
+  const user = req.userAuthenticated.dataValues;
+  albumService
+    .getAlbum(user.id, albumId)
+    .then(existingPurchase => {
+      if (existingPurchase) {
+        albumService
+          .getPhotosOfAlbum(existingPurchase.albumId)
+          .then(photos => {
+            res.status(200).send({ photos });
+          })
+          .catch(err => {
+            return next(err);
+          });
+      } else {
+        return next(errors.noAlbumBought(albumId));
+      }
+    })
+    .catch(err => {
+      return next(err);
+    });
+};

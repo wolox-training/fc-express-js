@@ -41,6 +41,23 @@ exports.alreadyBought = {
 };
 
 exports.albumsProviderFail = {
-  statusCode: 500,
+  statusCode: 504,
   message: 'The request to the albums provider failed.'
+};
+
+exports.noUserEqual = {
+  statusCode: 401,
+  message: 'The Id of request is not equal to the user authenticated.'
+};
+
+exports.isNotAdmin = {
+  statusCode: 401,
+  message: 'The user is not an user administrator.'
+};
+
+exports.noAlbumBought = albumId => {
+  return {
+    statusCode: 404,
+    message: `The user has not bought the album ${albumId} yet.`
+  };
 };

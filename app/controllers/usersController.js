@@ -81,3 +81,35 @@ exports.getAllUsers = (req, res, next) => {
       }
     });
 };
+
+exports.createUserAdmin = (req, res, next) => {
+  const isAdmin = req.userAuthenticated.dataValues.isAdmin;
+  const userParams = req.body
+    ? {
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
+        password: req.body.password
+      }
+    : {};
+  if (!isAdmin) {
+    next(errors.isNotAdmin);
+  } else {
+    userService
+      .createUserAdmin(userParams)
+      .then(user => {
+        logger.info(`The admin ${user.name} ${user.surname} was created succesfully`);
+        res.status(201).send({
+          name: user.name,
+          surname: user.surname,
+          email: user.email,
+          isAdmin: user.isAdmin
+        });
+      })
+      .catch(err => {
+        logger.error('the admin User was not created');
+        res.status(422).send(err.message);
+        next(err);
+      });
+  }
+};
