@@ -6,7 +6,7 @@ const errors = require('../errors'),
   bcrypt = require('bcrypt'),
   moment = require('moment'),
   userService = require('../services/userService'),
-  tokenExpirationTime = require('./../../config').common.tokenExpiration,
+  tokenExpirationTime = require('./../../config').common.session.tokenExpiration,
   sessionManager = require('../services/sessionManager');
 
 exports.login = (req, res, next) => {
@@ -89,7 +89,7 @@ exports.getAllUsers = (req, res, next) => {
     offset: paginationParams.offset || 0
   })
     .then(users => {
-      res.status(201);
+      res.status(200);
       res.send({ users });
     })
     .catch(err => {

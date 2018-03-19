@@ -15,7 +15,6 @@ exports.getByEmail = email => {
 
 exports.createUserAdmin = user => {
   const randomNumber = Math.floor(Math.random() * 1000);
-  console.log(randomNumber);
   return User.findOrCreate({
     where: { email: user.email },
     defaults: {
