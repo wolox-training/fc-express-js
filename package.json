@@ -21,7 +21,7 @@
     "prestart": "npm run lint",
     "migrations": "./node_modules/.bin/sequelize db:migrate",
     "start": "./node_modules/.bin/nodemon --inspect app.js",
-    "test": "NODE_ENV=testing ./node_modules/mocha/bin/mocha --compilers js:babel-core/register test/app.js && npm run nsp" ,
+    "test": "NODE_ENV=testing ./node_modules/mocha/bin/mocha --compilers js:babel-core/register test/app.js && npm run nsp",
     "test-inspect": "NODE_ENV=testing node --inspect --debug-brk ./node_modules/mocha/bin/_mocha --compilers js:babel-core/register test/app.js"
   },
   "cacheDirectories": [
@@ -74,8 +74,8 @@
     "mocha": "^2.4.5",
     "mocha-lcov-reporter": "^1.2.0",
     "mockdate": "^2.0.2",
+    "nock": "^9.x",
     "nodemon": "^1.11.0",
-    "nock":"^9.x",
     "nsp": "^2.6.2",
     "prettier": "^1.8.2",
     "prettier-eslint": "^8.2.1",

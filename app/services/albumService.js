@@ -18,7 +18,7 @@ exports.getOneAlbum = id => {
       return albums.data[0];
     })
     .catch(err => {
-      logger.error('The request to the Provider of Albums failed');
+      logger.error('The request to the albums provider failed');
       throw errors.noAlbum;
     });
 };
@@ -37,16 +37,24 @@ exports.create = (userId, title, albumId) => {
   });
 };
 
-exports.getAlbumsForUserId = userId => {
+exports.getAlbumsForUserId = (userId, pagination) => {
   return Album.findAll({
     attributes: ['userId', 'albumId', 'title'],
     where: {
       userId
-    }
-  }).catch(err => {
-    logger.error(`Error in the dataBase, can not select all albums bought by user ${userId}`);
-    throw errors.databaseError;
-  });
+    },
+    limit: pagination.limit || 10,
+    offset: pagination.offset || 0
+  })
+    .then(albums => {
+      return Album.count({ where: { userId } }).then(count => {
+        return { albums, totalCount: count };
+      });
+    })
+    .catch(err => {
+      logger.error(`Error in the dataBase, can not select all albums bought by user ${userId}`);
+      throw errors.databaseError;
+    });
 };
 
 exports.getPhotosOfAlbum = id => {

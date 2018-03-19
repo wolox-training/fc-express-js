@@ -33,6 +33,7 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       },
+      validToken: DataTypes.INTEGER,
       password: {
         type: DataTypes.STRING,
         allowNull: false,

@@ -51,13 +51,23 @@ exports.buyAlbum = (req, res, next) => {
 exports.getBoughtAlbums = (req, res, next) => {
   const userIdRequest = parseInt(req.params.user_id, 10);
   const userIdDataBase = req.userAuthenticated.dataValues.id;
+  const paginationParams = req.query
+    ? {
+        limit: req.query.limit,
+        offset: req.query.offset
+      }
+    : {};
+
   if (userIdRequest !== userIdDataBase) {
     return next(errors.noUserEqual);
   } else {
     albumService
-      .getAlbumsForUserId(userIdDataBase)
-      .then(albums => {
-        res.status(200).send({ albums });
+      .getAlbumsForUserId(userIdDataBase, paginationParams)
+      .then(response => {
+        res.status(200).send({
+          albums: response.albums,
+          totalCount: response.totalCount
+        });
       })
       .catch(err => {
         return next(err);
@@ -68,13 +78,19 @@ exports.getBoughtAlbums = (req, res, next) => {
 exports.seePhotos = (req, res, next) => {
   const albumId = req.params.id;
   const user = req.userAuthenticated.dataValues;
+
   albumService
     .getAlbum(user.id, albumId)
     .then(existingPurchase => {
       if (existingPurchase) {
-        albumService.getPhotosOfAlbum(existingPurchase.albumId).then(photos => {
-          res.status(200).send({ photos });
-        });
+        albumService
+          .getPhotosOfAlbum(existingPurchase.albumId)
+          .then(photos => {
+            res.status(200).send({ photos });
+          })
+          .catch(err => {
+            return next(err);
+          });
       } else {
         return next(errors.noAlbumBought(albumId));
       }

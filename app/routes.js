@@ -11,4 +11,5 @@ exports.init = app => {
   app.post('/albums/:id', [auth.secure], albums.buyAlbum);
   app.get('/users/:user_id/albums', [auth.secure], albums.getBoughtAlbums);
   app.get('/users/albums/:id/photos', [auth.secure], albums.seePhotos);
+  app.post('/users/sessions/invalidate_all', [auth.secure], users.invalidateSession);
 };

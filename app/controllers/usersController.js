@@ -6,7 +6,7 @@ const errors = require('../errors'),
   bcrypt = require('bcrypt'),
   moment = require('moment'),
   userService = require('../services/userService'),
-  tokenExpirationTime = require('./../../config').common.tokenExpiration,
+  tokenExpirationTime = require('./../../config').common.session.tokenExpiration,
   sessionManager = require('../services/sessionManager');
 
 exports.login = (req, res, next) => {
@@ -23,6 +23,7 @@ exports.login = (req, res, next) => {
         if (isValid) {
           const payload = {
             email: userInBD.email,
+            numberOfValidToken: userInBD.validToken,
             expirationTime: moment()
               .add(tokenExpirationTime, 'minutes')
               .unix()
@@ -43,12 +44,14 @@ exports.login = (req, res, next) => {
 };
 
 exports.create = (req, res, next) => {
+  const randomNumber = Math.floor(Math.random() * 1000);
   const userParams = req.body
     ? {
         name: req.body.name,
         surname: req.body.surname,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        validToken: randomNumber
       }
     : {};
 
@@ -73,11 +76,20 @@ exports.create = (req, res, next) => {
 };
 
 exports.getAllUsers = (req, res, next) => {
+  const paginationParams = req.query
+    ? {
+        limit: req.query.limit,
+        offset: req.query.offset
+      }
+    : {};
+
   User.findAll({
-    attributes: ['name', 'surname', 'email']
+    attributes: ['name', 'surname', 'email'],
+    limit: paginationParams.limit || 10,
+    offset: paginationParams.offset || 0
   })
     .then(users => {
-      res.status(201);
+      res.status(200);
       res.send({ users });
     })
     .catch(err => {
@@ -91,13 +103,15 @@ exports.getAllUsers = (req, res, next) => {
 };
 
 exports.createUserAdmin = (req, res, next) => {
+  const randomNumber = Math.floor(Math.random() * 1000);
   const isAdmin = req.userAuthenticated.dataValues.isAdmin;
   const userParams = req.body
     ? {
         name: req.body.name,
         surname: req.body.surname,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        validToken: randomNumber
       }
     : {};
   if (!isAdmin) {
@@ -120,4 +134,18 @@ exports.createUserAdmin = (req, res, next) => {
         next(err);
       });
   }
+};
+
+exports.invalidateSession = (req, res, next) => {
+  const email = req.userAuthenticated.dataValues.email;
+  userService
+    .invalidateSessionForUser(email)
+    .then(userInvalidated => {
+      logger.error('Your token was invalidated');
+      res.status(200).send('Your token was invalidated');
+    })
+    .catch(err => {
+      logger.error('can not invalidate token of session');
+      res.status(422).send(err.message);
+    });
 };
