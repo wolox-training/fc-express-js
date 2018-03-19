@@ -18,6 +18,7 @@ exports.getOneAlbum = id => {
       return albums.data[0];
     })
     .catch(err => {
+      logger.error('The request to the Provider of Albums failed');
       throw errors.noAlbum;
     });
 };
