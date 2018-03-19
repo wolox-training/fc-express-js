@@ -46,7 +46,7 @@ exports.getAlbumsForUserId = (userId, pagination) => {
     limit: pagination.limit || 10,
     offset: pagination.offset || 0
   }).catch(err => {
-    logger.error('Error in the Database, can not find the user id');
+    logger.error(`Error in the dataBase, can not select all albums bought by user ${userId}`);
     throw errors.databaseError;
   });
 };
