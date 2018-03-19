@@ -306,29 +306,21 @@ describe('/admin/users POST', () => {
   });
 
   it(`should fail because is not an admin user`, done => {
-    const AdmiUuserCreation = User.create({
-      name: 'Franco',
-      surname: 'Coronel',
-      email: 'franco.coronel@wolox.com.ar',
-      password: 'passwordFC',
-      isAdmin: true
-    }).then(
-      successfullLogin('franco.coronel@wolox.com.ar', 'passwordFC').then(loginRes => {
-        User.count().then(oldCount => {
-          userAdminRequest
-            .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
-            .catch(err => {
-              err.should.have.status(401);
-              err.response.should.be.json;
-              err.response.body.should.have.property('error');
-              User.count().then(newCount => {
-                newCount.should.be.equal(oldCount);
-                done();
-              });
+    successfullLogin('franco.coronel@wolox.com.ar', 'passwordFC').then(loginRes => {
+      User.count().then(oldCount => {
+        userAdminRequest
+          .set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME])
+          .catch(err => {
+            err.should.have.status(401);
+            err.response.should.be.json;
+            err.response.body.should.have.property('error');
+            User.count().then(newCount => {
+              newCount.should.be.equal(oldCount);
+              done();
             });
-        });
-      })
-    );
+          });
+      });
+    });
   });
 
   it('should create an admin user', done => {
