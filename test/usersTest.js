@@ -5,6 +5,8 @@ const chai = require('chai'),
   expect = chai.expect,
   should = chai.should(),
   sessionManager = require('./../app/services/sessionManager'),
+  mockDate = require('mockdate'),
+  moment = require('moment'),
   User = require('./../app/models').User;
 
 chai.use(chaiHttp);
@@ -356,5 +358,36 @@ describe('/admin/users POST', () => {
         });
       });
     });
+  });
+});
+
+describe('Token expired /users GET', () => {
+  let request;
+  let userCreation;
+  beforeEach(done => {
+    request = chai.request(server).get('/users');
+    userCreation = User.create({
+      name: 'Franco',
+      surname: 'Coronel',
+      email: 'franco.coronel@wolox.com.ar',
+      password: 'passwordFC'
+    }).then(newUser => {
+      done();
+    });
+  });
+
+  it('should fail because token expired', done => {
+    userCreation.then(
+      successfullLogin('franco.coronel@wolox.com.ar', 'passwordFC').then(loginRes => {
+        mockDate.set(moment().add(1, 'days'));
+        request.set(sessionManager.HEADER_NAME, loginRes.headers[sessionManager.HEADER_NAME]).catch(err => {
+          err.response.should.have.status(401);
+          err.response.should.be.json;
+          err.response.body.should.have.property('message');
+          mockDate.reset();
+          done();
+        });
+      })
+    );
   });
 });
